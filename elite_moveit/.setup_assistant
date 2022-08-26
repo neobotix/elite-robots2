@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: elite_description
+    relative_path: urdf/ec66_description.urdf
+  srdf:
+    relative_path: config/ec66.srdf
+  package_settings:
+    author_name: padmanabhan
+    author_email: padmanabhan@neobotix.de
+    generated_timestamp: 1661453686
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
