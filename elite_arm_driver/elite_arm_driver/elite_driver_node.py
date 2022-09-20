@@ -45,6 +45,9 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
 
         print("Robot startup success...")
 
+    def spin(self):
+        EliteStatePublisher.update_states()
+
 def main(args=None):
     rclpy.init(args=args)
 
@@ -53,7 +56,13 @@ def main(args=None):
     # Initialize elite_drivers
     elite_driver.init_ec_sdk()
 
-    rclpy.spin()
+    loop_rate = elite_driver.create_rate(125)
+    while rclpy.ok():
+        elite_driver.spin()
+        rate.sleep()
+
+    rclpy.spin(elite_driver)
 
 if __name__ == "__main__":
     main()
+
