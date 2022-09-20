@@ -27,6 +27,8 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
         self.ip_address = "192.168.1.200"
         self.auto_connect = True
         self.use_fake = False
+        timer_period = 0.01
+        self.create_timer(timer_period, self.publish_states)
 
     def init_ec_sdk(self) -> None:
         if self.use_fake:
@@ -45,7 +47,7 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
 
         print("Robot startup success...")
 
-    def spin(self):
+    def publish_states(self):
         EliteStatePublisher.update_states()
 
 def main(args=None):
@@ -55,11 +57,6 @@ def main(args=None):
 
     # Initialize elite_drivers
     elite_driver.init_ec_sdk()
-
-    loop_rate = elite_driver.create_rate(125)
-    while rclpy.ok():
-        elite_driver.spin()
-        rate.sleep()
 
     rclpy.spin(elite_driver)
 
