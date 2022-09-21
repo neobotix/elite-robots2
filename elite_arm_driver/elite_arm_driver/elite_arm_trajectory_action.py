@@ -15,7 +15,7 @@ class EliteArmTrajectoryAction():
         self.action_server = ActionServer(
             self,
             FollowJointTrajectory,
-            'manipulator_controller/follow_joint_trajectory',
+            'arm_controller/follow_joint_trajectory',
             execute_callback=self.execute_callback,
             callback_group=ReentrantCallbackGroup(),
             goal_callback=self.goal_callback,
