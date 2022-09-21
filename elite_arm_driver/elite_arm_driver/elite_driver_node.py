@@ -10,6 +10,7 @@ from .elite_arm_kinematics import EliteArmKinematics
 from .elite_arm_move import EliteArmMove
 from .elite_arm_set_io import EliteArmSetIO
 from .elite_state_publisher import EliteStatePublisher
+from .elite_arm_fake_ec import EliteArmFakeEc
 
 
 class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteStatePublisher):
@@ -32,7 +33,7 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
 
     def init_ec_sdk(self) -> None:
         if self.use_fake:
-            self.elite_robot = FakeEc(
+            self.elite_robot = EliteArmFakeEc(
                 ip_address=self.ip_address, auto_connect=self.auto_connect)
         else:
             self.elite_robot = EC(
@@ -48,7 +49,7 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
         print("Robot startup success...")
 
     def publish_states(self):
-        EliteStatePublisher.update_states()
+        EliteStatePublisher.update_states(self)
 
 def main(args=None):
     rclpy.init(args=args)
@@ -62,4 +63,3 @@ def main(args=None):
 
 if __name__ == "__main__":
     main()
-
