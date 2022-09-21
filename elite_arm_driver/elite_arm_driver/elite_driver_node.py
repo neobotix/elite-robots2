@@ -11,9 +11,10 @@ from .elite_arm_move import EliteArmMove
 from .elite_arm_set_io import EliteArmSetIO
 from .elite_state_publisher import EliteStatePublisher
 from .elite_arm_fake_ec import EliteArmFakeEc
+from .elite_arm_trajectory_action import EliteArmTrajectoryAction
 
 
-class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteStatePublisher):
+class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteStatePublisher, EliteArmTrajectoryAction):
 
     def __init__(self) -> None:
         super().__init__('elite_driver_node')
@@ -21,6 +22,7 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
         EliteArmMove.__init__(self)
         EliteArmSetIO.__init__(self)
         EliteStatePublisher.__init__(self)
+        EliteArmTrajectoryAction.__init__(self)
 
         self.elite_robot = None
         
