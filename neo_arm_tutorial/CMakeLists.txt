@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(visualization_msgs REQUIRED)
 
 add_executable(neo_arm_tutoral src/neo_arm_tutoral.cpp)
 target_include_directories(neo_arm_tutoral PUBLIC
@@ -19,6 +20,7 @@ ament_target_dependencies(
   neo_arm_tutoral
   "moveit_ros_planning_interface"
   "rclcpp"
+  visualization_msgs
 )
 
 install(TARGETS neo_arm_tutoral
