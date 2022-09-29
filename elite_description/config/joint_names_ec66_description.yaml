@@ -24,9 +24,10 @@ arm_controller:
     state_publish_rate: 100.0
     action_monitor_rate: 20.0
     allow_partial_joints_goal: false
+    use_sim_time: true
     constraints:
       stopped_velocity_tolerance: 0.2
-      goal_time: 0.0
+      goal_time: 1.0
       joint1: { trajectory: 0.2, goal: 0.1 }
       joint2: { trajectory: 0.2, goal: 0.1 }
       joint3: { trajectory: 0.2, goal: 0.1 }

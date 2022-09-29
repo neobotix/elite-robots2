@@ -7,7 +7,7 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: padmanabhan
     author_email: padmanabhan@neobotix.de
-    generated_timestamp: 1661453686
+    generated_timestamp: 1663783032
   control_xacro:
     command:
       - position

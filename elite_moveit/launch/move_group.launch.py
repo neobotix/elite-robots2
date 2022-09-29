@@ -1,5 +1,12 @@
 from moveit_configs_utils import MoveItConfigsBuilder
 from moveit_configs_utils.launches import generate_move_group_launch
+
+
+def generate_launch_description():
+    moveit_config = MoveItConfigsBuilder("ec66", package_name="elite_moveit").to_moveit_configs()
+    return generate_move_group_launch(moveit_config)
+from moveit_configs_utils import MoveItConfigsBuilder
+from moveit_configs_utils.launches import generate_move_group_launch
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
@@ -63,6 +70,7 @@ def generate_launch_description():
 
     move_group_configuration = {
         "publish_robot_description_semantic": True,
+        "publish_robot_description": True,
         "allow_trajectory_execution": LaunchConfiguration("allow_trajectory_execution"),
         # Note: Wrapping the following values is necessary so that the parameter value can be the empty string
         "capabilities": ParameterValue(
@@ -98,6 +106,19 @@ def generate_launch_description():
         # Set the display variable, in case OpenGL code is used internally
         additional_env={"DISPLAY": ":0"},
     )
+
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2_moveit",
+        output="log",
+        parameters=[
+            {"use_sim_time": True}
+        ]
+    )
+
+    ld.add_action(rviz_node)
+
     return ld
 
     # moveit_config = MoveItConfigsBuilder("ec66", package_name="elite_moveit").to_moveit_configs()
