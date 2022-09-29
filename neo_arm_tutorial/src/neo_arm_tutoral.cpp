@@ -12,6 +12,8 @@
 #include <visualization_msgs/msg/marker_array.hpp>
 #include <chrono>
 
+#include <math.h>
+
 using namespace std::chrono_literals;
 
 // #include <moveit_visual_tools/moveit_visual_tools.h>
@@ -125,16 +127,24 @@ int main(int argc, char * argv[])
   std::vector<geometry_msgs::msg::Pose> waypoints;
   waypoints.push_back(start_pose2);
 
+
   geometry_msgs::msg::Pose target_pose3 = start_pose2;
+  target_pose3.position.z = 0.5;
 
-  target_pose3.position.x -= 0.2;
-  waypoints.push_back(target_pose3);  // down
+  for(int i = 0; i<=500; i++) {
+    target_pose3.position.x = sin(2*3.14*i*0.01) * 0.1 + 0.5;
+    target_pose3.position.y = (i*0.01)* 0.1 - 0.05;
+    waypoints.push_back(target_pose3);
+  }
 
-  target_pose3.position.x -= 0.2;
-  waypoints.push_back(target_pose3);  // right
+  // target_pose3.position.x -= 0.2;
+  // waypoints.push_back(target_pose3);  // down
 
-  target_pose3.position.x -= 0.2;
-  waypoints.push_back(target_pose3);  // up and left
+  // target_pose3.position.x -= 0.2;
+  // waypoints.push_back(target_pose3);  // right
+
+  // target_pose3.position.x -= 0.2;
+  // waypoints.push_back(target_pose3);  // up and left
 
   array_publisher->publish(publish_markers(waypoints));
 
