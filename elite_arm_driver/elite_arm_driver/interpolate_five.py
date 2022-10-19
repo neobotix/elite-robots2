@@ -51,8 +51,8 @@ def get_path_fun(path, joint_index=0):
     time_speed_fun = {}
     time_accelerate_fun = {}
     for i in range(len_point-1):
-        time = path[i+1].time_from_start.to_sec() - \
-            path[i].time_from_start.to_sec()
+        time = to_sec(path[i+1].time_from_start) - \
+            to_sec(path[i].time_from_start)
         start_joint = path[i].positions[joint_index]
         end_joint = path[i+1].positions[joint_index]
         start_speed = path[i].velocities[joint_index]
