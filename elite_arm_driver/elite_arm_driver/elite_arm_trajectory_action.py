@@ -25,7 +25,7 @@ class EliteArmTrajectoryAction():
 
     def goal_callback(self, goal_handle):
         self.get_logger().info('Goal request recieved')
-        self.goal = goal_request
+        self.goal = goal_handle
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
