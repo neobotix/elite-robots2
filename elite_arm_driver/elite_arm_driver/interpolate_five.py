@@ -89,4 +89,4 @@ def get_path_fun(path, joint_index=0):
     return sum_time, joint, speed, accelerate
 
 def to_sec(time):
-    return (time.sec() + time.nanosec() / 1e9)
+    return (time.sec + time.nanosec / 1e9)
