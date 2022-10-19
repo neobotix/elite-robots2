@@ -85,7 +85,7 @@ def generate_launch_description():
         "publish_state_updates": should_publish,
         "publish_transforms_updates": should_publish,
         "monitor_dynamics": False,
-        "use_sim_time": True,
+        "use_sim_time": False,
         "moveit_simple_controller_manager": controllers_yaml,
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
     }
@@ -113,7 +113,7 @@ def generate_launch_description():
         name="rviz2_moveit",
         output="log",
         parameters=[
-            {"use_sim_time": True}
+            {"use_sim_time": False}
         ]
     )
 
