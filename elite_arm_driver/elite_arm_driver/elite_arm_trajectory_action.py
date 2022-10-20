@@ -9,6 +9,7 @@ from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallb
 
 from .interpolate_five import get_five_fun, get_path_fun
 import math
+import time
 
 class EliteArmTrajectoryAction():
     def __init__(self, ):
