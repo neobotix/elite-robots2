@@ -24,13 +24,19 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
         EliteStatePublisher.__init__(self)
         EliteArmTrajectoryAction.__init__(self)
 
-        self.elite_robot = None
-        
+        # declare parameters
+        self.declare_parameter('ip_address', value = "192.168.1.200")
+        self.declare_parameter('auto_connect', value = True)
+        self.declare_parameter('use_fake', value = False)
+        self.declare_parameter('time_period', value=0.01)
+
         # Setup ros parameters
-        self.ip_address = "10.1.30.80"
-        self.auto_connect = True
-        self.use_fake = False
-        timer_period = 0.01
+        self.ip_address = self.get_parameter('ip_address').value
+        self.auto_connect = self.get_parameter('auto_connect').value
+        self.use_fake = self.get_parameter('use_fake').value
+        timer_period = self.get_parameter('time_period').value
+
+        self.elite_robot = None
         self.create_timer(timer_period, self.publish_states)
 
     def init_ec_sdk(self) -> None:

@@ -1,0 +1,6 @@
+elite_drive_node:
+  ros__parameters:
+    ip_address: "10.1.30.80"
+    auto_connect: True
+    use_fake: False
+    time_period: 0.01
