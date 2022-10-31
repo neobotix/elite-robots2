@@ -33,12 +33,13 @@ int main(int argc, char** argv)
     rclcpp::sleep_for(std::chrono::milliseconds(500));
   }
 
+  // Adding an object that the robot needs to hold
   moveit_msgs::msg::AttachedCollisionObject attached_object;
   attached_object.link_name = "flan";
   /* The header must contain a valid TF frame*/
   attached_object.object.header.frame_id = "flan";
   /* The id of the object */
-  attached_object.object.id = "box";
+  attached_object.object.id = "cylinder";
 
   /* A default pose */
   geometry_msgs::msg::Pose pose;
@@ -56,17 +57,48 @@ int main(int argc, char** argv)
 
   attached_object.object.operation = attached_object.object.ADD;
 
-  attached_object.touch_links = std::vector<std::string>{ "flan"};
+  attached_object.touch_links = std::vector<std::string>{"flan"};
+
+  // Adding an object that the environment needs to hold
+  moveit_msgs::msg::AttachedCollisionObject env_object;
+  env_object.link_name = "base_link";
+  /* The header must contain a valid TF frame*/
+  env_object.object.header.frame_id = "base_link";
+  /* The id of the object */
+  env_object.object.id = "BOX";
+
+  /* A default pose for floor */
+  geometry_msgs::msg::Pose pose_floor;
+  pose_floor.position.z = 0.0;
+  pose_floor.orientation.w = 1.0;
+
+  shape_msgs::msg::SolidPrimitive rec;
+  rec.type = rec.BOX;
+  rec.dimensions.resize(3);
+  rec.dimensions[0] = 2.5;
+  rec.dimensions[1] = 2.5;
+  rec.dimensions[2] = 0.0;
+
+  env_object.object.primitives.push_back(rec);
+  env_object.object.primitive_poses.push_back(pose_floor);
+
+  env_object.object.operation = env_object.object.ADD;
+
+  env_object.touch_links = std::vector<std::string>{"base_link"};
 
   moveit_msgs::msg::PlanningScene planning_scene;
+  planning_scene.world.collision_objects.push_back(env_object.object);
   planning_scene.world.collision_objects.push_back(attached_object.object);
   planning_scene.is_diff = true;
   planning_scene_diff_publisher->publish(planning_scene);
 
-  RCLCPP_INFO(LOGGER, "Attaching the object to the hand and removing it from the world.");
+  RCLCPP_INFO(LOGGER, "Attaching the object to the hand and the world.");
+  planning_scene.robot_state.attached_collision_objects.push_back(env_object);
   planning_scene.robot_state.attached_collision_objects.push_back(attached_object);
   planning_scene.robot_state.is_diff = true;
   planning_scene_diff_publisher->publish(planning_scene);
+
+  // ToDo detach the objects, if needed.
 
   rclcpp::shutdown();
   return 0;
