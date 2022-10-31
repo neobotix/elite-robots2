@@ -12,6 +12,8 @@ find_package(rclcpp REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
 add_executable(neo_arm_tutoral src/neo_arm_tutoral.cpp)
+add_executable(planning_scene_ros_api_tutorial src/planning_scene_ros_api_tutorial.cpp)
+
 target_include_directories(neo_arm_tutoral PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -23,7 +25,14 @@ ament_target_dependencies(
   visualization_msgs
 )
 
-install(TARGETS neo_arm_tutoral
+ament_target_dependencies(
+  planning_scene_ros_api_tutorial
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  visualization_msgs
+)
+
+install(TARGETS neo_arm_tutoral planning_scene_ros_api_tutorial
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
