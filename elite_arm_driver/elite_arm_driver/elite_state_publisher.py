@@ -9,7 +9,7 @@ class EliteStatePublisher():
     def __init__(self):
         print("starting elite state publishers")
         # Publish joint states
-        self.joint_state_publisher = self.create_publisher(JointState, "joint_state", 10)
+        self.joint_state_publisher = self.create_publisher(JointState, "joint_states", 10)
         # Todo Ros parameter
         self.joint_name = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6']
 

@@ -27,7 +27,7 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
         self.elite_robot = None
         
         # Setup ros parameters
-        self.ip_address = "192.168.1.200"
+        self.ip_address = "10.1.30.80"
         self.auto_connect = True
         self.use_fake = False
         timer_period = 0.01

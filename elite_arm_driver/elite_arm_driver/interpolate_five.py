@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import math
-
+from builtin_interfaces.msg import Duration
 
 def get_five_fun(time, start_joint, end_joint, start_speed=0, end_speed=0, start_acc=0, end_acc=0):
     """五次项目，生成一段函数"""
@@ -45,14 +45,14 @@ def get_five_fun(time, start_joint, end_joint, start_speed=0, end_speed=0, start
 
 def get_path_fun(path, joint_index=0):
     """获取整个路径关于时间的函数"""
-    sum_time = path[-1].time_from_start.to_sec()  # 总时间
+    sum_time = to_sec(path[-1].time_from_start)  # 总时间
     len_point = len(path)  # 总点数
     time_joint_fun = {}
     time_speed_fun = {}
     time_accelerate_fun = {}
     for i in range(len_point-1):
-        time = path[i+1].time_from_start.to_sec() - \
-            path[i].time_from_start.to_sec()
+        time = to_sec(path[i+1].time_from_start) - \
+            to_sec(path[i].time_from_start)
         start_joint = path[i].positions[joint_index]
         end_joint = path[i+1].positions[joint_index]
         start_speed = path[i].velocities[joint_index]
@@ -61,9 +61,9 @@ def get_path_fun(path, joint_index=0):
         end_acc = path[i+1].accelerations[joint_index]
         f, s, a = get_five_fun(time, start_joint, end_joint,
                                start_speed, end_speed, start_acc, end_acc)
-        time_joint_fun[path[i+1].time_from_start.to_sec()] = f
-        time_speed_fun[path[i+1].time_from_start.to_sec()] = s
-        time_accelerate_fun[path[i+1].time_from_start.to_sec()] = a
+        time_joint_fun[to_sec(path[i+1].time_from_start)] = f
+        time_speed_fun[to_sec(path[i+1].time_from_start)] = s
+        time_accelerate_fun[to_sec(path[i+1].time_from_start)] = a
 
     def joint(jt):
         last_t = 0
@@ -87,3 +87,6 @@ def get_path_fun(path, joint_index=0):
             last_t = t
 
     return sum_time, joint, speed, accelerate
+
+def to_sec(time):
+    return (time.sec + time.nanosec / 1e9)

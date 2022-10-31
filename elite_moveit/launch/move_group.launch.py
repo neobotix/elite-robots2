@@ -1,12 +1,5 @@
 from moveit_configs_utils import MoveItConfigsBuilder
 from moveit_configs_utils.launches import generate_move_group_launch
-
-
-def generate_launch_description():
-    moveit_config = MoveItConfigsBuilder("ec66", package_name="elite_moveit").to_moveit_configs()
-    return generate_move_group_launch(moveit_config)
-from moveit_configs_utils import MoveItConfigsBuilder
-from moveit_configs_utils.launches import generate_move_group_launch
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
@@ -35,7 +28,7 @@ def load_yaml(package_name, file_path):
     try:
         with open(absolute_file_path, "r") as file:
             return yaml.safe_load(file)
-    except EnvironmentError:  # parent of IOError, OSError *and* WindowsError where available
+    except EnvironmentError:
         return None
 
 def generate_launch_description():
@@ -48,6 +41,8 @@ def generate_launch_description():
         .to_moveit_configs()
     )
     ld = LaunchDescription()
+
+    use_sim_time = LaunchConfiguration('use_sim_time', default=False)
 
     ld.add_action(DeclareBooleanLaunchArg("debug", default_value=False))
     ld.add_action(
@@ -85,7 +80,7 @@ def generate_launch_description():
         "publish_state_updates": should_publish,
         "publish_transforms_updates": should_publish,
         "monitor_dynamics": False,
-        "use_sim_time": True,
+        "use_sim_time": use_sim_time,
         "moveit_simple_controller_manager": controllers_yaml,
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
     }
@@ -107,17 +102,32 @@ def generate_launch_description():
         additional_env={"DISPLAY": ":0"},
     )
 
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2_moveit",
-        output="log",
-        parameters=[
-            {"use_sim_time": True}
-        ]
+    moveit_path = get_package_share_directory("elite_moveit")
+
+    # overriding the default launch for moveit rviz, so that we can toggle use_sim_time
+    ld.add_action(
+        DeclareLaunchArgument(
+            "rviz_config",
+            default_value=str(moveit_path + "/config/moveit.rviz"),
+        )
     )
 
-    ld.add_action(rviz_node)
+    rviz_parameters = [
+        moveit_config.planning_pipelines,
+        moveit_config.robot_description_kinematics,
+        {"use_sim_time": use_sim_time}
+    ]
+
+    add_debuggable_node(
+        ld,
+        package="rviz2",
+        executable="rviz2",
+        output="log",
+        respawn=False,
+        arguments=["-d", LaunchConfiguration("rviz_config")],
+        parameters=rviz_parameters,
+    )
+    # ld.add_action(rviz_node)
 
     return ld
 

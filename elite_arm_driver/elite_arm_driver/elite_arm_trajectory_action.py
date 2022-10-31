@@ -8,6 +8,8 @@ from elite_msgs.srv import StopMove
 from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
 
 from .interpolate_five import get_five_fun, get_path_fun
+import math
+import time
 
 class EliteArmTrajectoryAction():
     def __init__(self, ):
@@ -25,7 +27,7 @@ class EliteArmTrajectoryAction():
 
     def goal_callback(self, goal_handle):
         self.get_logger().info('Goal request recieved')
-        self.goal = goal_request
+        self.goal = goal_handle
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
@@ -37,6 +39,8 @@ class EliteArmTrajectoryAction():
     async def execute_callback(self, goal_handle):
         points = self.goal.trajectory.points
         joints = []
+        joint = []
+        time_stamp = []
         for joint_index in range(6):
             sum_time, f, s, a = get_path_fun(points, joint_index)
             jointi = []
