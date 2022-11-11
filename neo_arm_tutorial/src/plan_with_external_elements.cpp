@@ -88,12 +88,10 @@ int main(int argc, char** argv)
 
   moveit_msgs::msg::PlanningScene planning_scene;
   planning_scene.world.collision_objects.push_back(env_object.object);
-  planning_scene.world.collision_objects.push_back(attached_object.object);
   planning_scene.is_diff = true;
   planning_scene_diff_publisher->publish(planning_scene);
 
   RCLCPP_INFO(LOGGER, "Attaching the object to the hand and the world.");
-  planning_scene.robot_state.attached_collision_objects.push_back(env_object);
   planning_scene.robot_state.attached_collision_objects.push_back(attached_object);
   planning_scene.robot_state.is_diff = true;
   planning_scene_diff_publisher->publish(planning_scene);
