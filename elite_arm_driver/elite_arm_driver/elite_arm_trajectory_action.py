@@ -19,7 +19,7 @@ class EliteArmTrajectoryAction():
             FollowJointTrajectory,
             'arm_controller/follow_joint_trajectory',
             execute_callback=self.execute_callback,
-            callback_group=ReentrantCallbackGroup(),
+            callback_group=MutuallyExclusiveCallbackGroup(),
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback)
         self.interpolate_sample_time = 0.008
@@ -36,7 +36,7 @@ class EliteArmTrajectoryAction():
         self._stop_move()
         return CancelResponse.ACCEPT
 
-    async def execute_callback(self, goal_handle):
+    def execute_callback(self, goal_handle):
         points = self.goal.trajectory.points
         joints = []
         joint = []
