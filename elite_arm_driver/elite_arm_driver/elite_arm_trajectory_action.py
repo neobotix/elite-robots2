@@ -79,6 +79,14 @@ class EliteArmTrajectoryAction():
 
         goal_handle.succeed()
 
+        # ToDo: Handle errors
+        result = FollowJointTrajectory.Result()
+        result.error_code = result.SUCCESSFUL
+        result.error_string = "Completed"
+
+        return result
+
+
 
     def _stop_move(self) -> bool:
         request = StopMove.Request()
