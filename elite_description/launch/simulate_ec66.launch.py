@@ -10,14 +10,21 @@ from launch.substitutions import ThisLaunchFileDir, LaunchConfiguration, Command
 from launch_ros.actions import Node
 import os
 from pathlib import Path
+import xacro
 
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='False')
 
     urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description.urdf')
+    doc = xacro.parse(open(urdf)) 
+    xacro.process_doc(doc) 
 
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',arguments=['-entity', "ec66", '-file', urdf], output='screen')
+    spawn_entity = Node(
+        package='gazebo_ros',
+        executable='spawn_entity.py',
+        arguments=['-entity', "ec66", '-topic', "robot_description"],
+        output='screen')
 
     default_world_path = os.path.join(get_package_share_directory('elite_description'), 'world', 'empty_world.world')
 
@@ -26,8 +33,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         name='robot_state_publisher',
         output='screen',
-        parameters=[{'robot_description':Command([
-            "xacro", " ", urdf]), 'use_sim_time': use_sim_time}]
+        parameters=[{'robot_description':doc.toxml(), 'use_sim_time': use_sim_time}]
         )
 
     gazebo = IncludeLaunchDescription(
