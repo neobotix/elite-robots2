@@ -37,7 +37,7 @@ def generate_launch_description():
         .robot_description(file_path="config/ec66.urdf.xacro")
         .robot_description_semantic(file_path="config/ec66.srdf")
         .robot_description_kinematics(file_path="config/kinematics.yaml")
-        .planning_pipelines(default_planning_pipeline="ompl", pipelines=["ompl"])
+        .planning_pipelines(default_planning_pipeline="ompl", pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
         .to_moveit_configs()
     )
     ld = LaunchDescription()
