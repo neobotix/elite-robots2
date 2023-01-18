@@ -82,7 +82,7 @@
         <parent link="link1" />
         <child link="link2" />
         <axis xyz="0 0 1" />
-        <limit lower="-3.14" upper="0" effort="150.0" velocity="2.61993" />
+        <limit lower="-6.2832" upper="6.2832" effort="150.0" velocity="2.61993" />
         <dynamics damping="1.5" friction="3.5" />
     </joint>
     <link name="link3">
@@ -108,7 +108,7 @@
         </collision>
     </link>
     <joint name="joint3" type="revolute">
-        <origin xyz="0 0.418 0" rpy="0 0 1.10" />
+        <origin xyz="0 0.418 0" rpy="0 0 1.5708" />
         <parent link="link2" />
         <child link="link3" />
         <axis xyz="0 0 1" />
