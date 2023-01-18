@@ -3,7 +3,7 @@
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
 
     <!-- Import ec66 urdf file -->
-    <xacro:include filename="$(find elite_description)/urdf/ec66_description.urdf" />
+    <xacro:include filename="$(find elite_description)/urdf/ec66_description_real.urdf" />
 
     <!-- Import control_xacro -->
     <xacro:include filename="ec66.ros2_control.xacro" />
