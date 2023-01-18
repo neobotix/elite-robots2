@@ -2,6 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 
 import time
 
@@ -31,7 +33,10 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
         self.auto_connect = True
         self.use_fake = False
         timer_period = 0.01
-        self.create_timer(timer_period, self.publish_states)
+
+        # Seperate CB group for publishing joint states in parallel
+        state_publisher_cb_grp = MutuallyExclusiveCallbackGroup()
+        self.create_timer(timer_period, self.publish_states, callback_group=state_publisher_cb_grp)
 
     def init_ec_sdk(self) -> None:
         if self.use_fake:
@@ -61,7 +66,11 @@ def main(args=None):
     # Initialize elite_drivers
     elite_driver.init_ec_sdk()
 
-    rclpy.spin(elite_driver)
+    # Multiple threading
+    executor = MultiThreadedExecutor()
+    executor.add_node(elite_driver)
+
+    executor.spin()
 
 if __name__ == "__main__":
     main()
