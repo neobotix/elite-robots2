@@ -28,11 +28,17 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
 
         self.elite_robot = None
         
-        # Setup ros parameters
-        self.ip_address = "10.1.30.80"
-        self.auto_connect = True
-        self.use_fake = False
-        timer_period = 0.01
+        # declare parameters
+        self.declare_parameter('ip_address', value = "10.10.10.10")
+        self.declare_parameter('auto_connect', value = True)
+        self.declare_parameter('use_fake', value = False)
+        self.declare_parameter('timer_period', value = 0.01)
+
+        # assign parameters
+        self.ip_address = self.get_parameter('ip_address').value
+        self.auto_connect = self.get_parameter('auto_connect').value
+        self.use_fake = self.get_parameter('use_fake').value
+        timer_period = self.get_parameter('timer_period').value
 
         # Seperate CB group for publishing joint states in parallel
         state_publisher_cb_grp = MutuallyExclusiveCallbackGroup()
