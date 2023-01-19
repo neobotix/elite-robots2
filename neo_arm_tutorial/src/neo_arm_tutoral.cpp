@@ -10,6 +10,9 @@
 #include <moveit_msgs/msg/collision_object.hpp>
 
 #include <visualization_msgs/msg/marker_array.hpp>
+#include <moveit/trajectory_processing/iterative_time_parameterization.h>
+#include <moveit/robot_trajectory/robot_trajectory.h>
+
 #include <chrono>
 
 #include <math.h>
@@ -122,14 +125,13 @@ int main(int argc, char * argv[])
   start_state.setFromIK(joint_model_group, start_pose2);
   move_group.setStartState(start_state);
 
-  move_group.setPoseReferenceFrame("base_link");
+  // move_group.setPoseReferenceFrame("flan");
 
   std::vector<geometry_msgs::msg::Pose> waypoints;
   waypoints.push_back(start_pose2);
 
-
   geometry_msgs::msg::Pose target_pose3 = start_pose2;
-  target_pose3.position.z = 0.5;
+  // target_pose3.position.z = 0.5;
 
   for(int i = 0; i<=500; i++) {
     target_pose3.position.x = sin(2*3.14*i*0.01) * 0.1 + 0.5;
@@ -154,12 +156,20 @@ int main(int argc, char * argv[])
   // Warning - disabling the jump threshold while operating real hardware can cause
   // large unpredictable motions of redundant joints and could be a safety issue
   moveit_msgs::msg::RobotTrajectory trajectory;
+  moveit_msgs::msg::RobotTrajectory trajectory_slow; //optimizing the trajectory
+
   const double jump_threshold = 0.0;
   const double eef_step = 0.01;
   double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
   RCLCPP_INFO(logger, "Visualizing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
 
-  move_group.execute(trajectory);
+  trajectory_processing::IterativeParabolicTimeParameterization iptp(100, 0.05);
+  robot_trajectory::RobotTrajectory r_trajec(move_group.getRobotModel(), PLANNING_GROUP);
+  r_trajec.setRobotTrajectoryMsg(*move_group.getCurrentState(), trajectory);
+  iptp.computeTimeStamps(r_trajec, 0.03, 0.03);
+  r_trajec.getRobotTrajectoryMsg(trajectory_slow);
+
+  move_group.execute(trajectory_slow);
 
   // Next step goes here
 
