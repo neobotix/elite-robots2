@@ -42,6 +42,14 @@
         <joint name="joint5" value="-4.6169"/>
         <joint name="joint6" value="-1.4233"/>
     </group_state>
+    <group_state name="pre-sine" group="arm">
+        <joint name="joint1" value="0"/>
+        <joint name="joint2" value="-1.5448"/>
+        <joint name="joint3" value="1.57"/>
+        <joint name="joint4" value="-1.57"/>
+        <joint name="joint5" value="1.848"/>
+        <joint name="joint6" value="0.5712"/>
+    </group_state>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_link" link2="link1" reason="Adjacent"/>
     <disable_collisions link1="base_link" link2="link2" reason="Never"/>
