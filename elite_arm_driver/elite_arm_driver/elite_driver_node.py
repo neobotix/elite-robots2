@@ -29,7 +29,7 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
         self.elite_robot = None
         
         # declare parameters
-        self.declare_parameter('ip_address', value = "10.10.10.10")
+        self.declare_parameter('ip_address', value = "10.1.30.80")
         self.declare_parameter('auto_connect', value = True)
         self.declare_parameter('use_fake', value = False)
         self.declare_parameter('timer_period', value = 0.01)
@@ -56,10 +56,10 @@ class EliteDriver(Node, EliteArmKinematics, EliteArmMove, EliteArmSetIO, EliteSt
             self.elite_robot.robot_servo_on()
         self.elite_robot.monitor_thread_run()
         while self.elite_robot.monitor_info.machinePos[0] == None:
-            print("Monitor is not start,wait...")
+            self.get_logger().info('Monitor is not start, wait...', once=True)
             time.sleep(1)
 
-        print("Robot startup success...")
+        self.get_logger().info('Robot startup success...', once=True)
 
     def publish_states(self):
         EliteStatePublisher.update_states(self)
