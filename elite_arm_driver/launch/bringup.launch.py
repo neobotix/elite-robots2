@@ -37,9 +37,21 @@ def execution_stage(context: LaunchContext):
             condition=IfCondition(start_rviz)
         )
 
+    urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description_real.urdf')
+
+    start_robot_state_publisher_cmd = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='screen',
+        parameters=[{'robot_description':Command([
+            "xacro", " ", urdf])}]
+        )
+
     return [
         bringup_arm_driver,
-        rviz_launch]
+        rviz_launch,
+        start_robot_state_publisher_cmd]
 
 def generate_launch_description():
     ip_addr_launch_arg = DeclareLaunchArgument(
