@@ -18,7 +18,9 @@ def get_five_fun(time, start_joint, end_joint, start_speed=0, end_speed=0, start
           tf[1] + (3*start_acc-2*end_acc)*tf[2]) / (2*tf[4])
     a5 = (12*det - (6*end_speed+6*start_speed) *
           tf[1] - (start_acc-end_acc)*tf[2]) / (2*tf[5])
-    print(a0, a1, a2, a3, a4, a5)
+    # ToDo: Handle logging of the list of points of each trajectory
+
+    # print(a0, a1, a2, a3, a4, a5)
 
     def joint(t):
         tf = []
