@@ -43,13 +43,13 @@ int main(int argc, char** argv)
 
   /* A default pose */
   geometry_msgs::msg::Pose pose;
-  pose.position.z = 0.03;
+  pose.position.z = 0.04;
   pose.orientation.w = 1.0;
 
   shape_msgs::msg::SolidPrimitive primitive;
   primitive.type = primitive.CYLINDER;
   primitive.dimensions.resize(2);
-  primitive.dimensions[0] = 0.042;
+  primitive.dimensions[0] = 0.05;
   primitive.dimensions[1] = 0.08;
 
   attached_object.object.primitives.push_back(primitive);
