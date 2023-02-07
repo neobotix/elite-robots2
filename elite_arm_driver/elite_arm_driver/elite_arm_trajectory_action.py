@@ -69,9 +69,6 @@ class EliteArmTrajectoryAction():
             last_joint = temp_joint
         if is_blocking:
             while 1:
-                if goal_handle.is_cancel_requested():
-                    goal_handle.canceled()
-                    break
                 time.sleep(0.1)
                 self.elite_robot:EC
                 current_joint = [round(i,1) for i in self.elite_robot.current_joint]
