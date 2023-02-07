@@ -59,23 +59,20 @@ class EliteArmTrajectoryAction():
             joint.append(0.0)
             joint.append(0.0)
 
-        is_blocking = True
-
         self.elite_robot.TT_init(t=time_stamp[1]*1000)
         last_joint = []
         for i in range(len(time_stamp)):
             temp_joint = joint[i*8:i*8+6]
             self.elite_robot.TT_add_joint(temp_joint)
             last_joint = temp_joint
-        if is_blocking:
-            while 1:
-                time.sleep(0.1)
-                self.elite_robot:EC
-                current_joint = [round(i,1) for i in self.elite_robot.current_joint]
-                goal_joint = [round(i,1) for i in last_joint]
-                if (current_joint == goal_joint):
-                    self.elite_robot.TT_clear_buff()
-                    break
+        while 1:
+            time.sleep(0.1)
+            self.elite_robot:EC
+            current_joint = [round(i,1) for i in self.elite_robot.current_joint]
+            goal_joint = [round(i,1) for i in last_joint]
+            if (current_joint == goal_joint):
+                self.elite_robot.TT_clear_buff()
+                break
 
         goal_handle.succeed()
 
