@@ -21,13 +21,15 @@ class EliteArmTrajectoryAction():
             execute_callback=self.execute_callback,
             callback_group=MutuallyExclusiveCallbackGroup(),
             goal_callback=self.goal_callback,
-            cancel_callback=self.cancel_callback)
+            cancel_callback=self.cancel_callback,
+            handle_accepted_callback=self.handle_accepted_callback)
         self.interpolate_sample_time = 0.008
         self.stop_mov_cli = self.create_client(StopMove, 'stop_move_server')
+        self.goal_handle_ = None
 
-    def goal_callback(self, goal_handle):
+    def goal_callback(self, goal_):
         self.get_logger().info('Goal request recieved')
-        self.goal = goal_handle
+        self.goal = goal_
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
@@ -35,6 +37,18 @@ class EliteArmTrajectoryAction():
         self.get_logger().info("Stopping initiated")
         self._stop_move()
         return CancelResponse.ACCEPT
+
+    def handle_accepted_callback(self, goal_handle):
+        # Takes care of multiple goal requests
+        if self.goal_handle_ != None:
+            if self.goal_handle_.is_active:
+                self.get_logger().info("Stopping the executing goal")
+                self._stop_move()
+                self.goal_handle_.canceled()
+        
+        self.goal_handle_ = goal_handle
+        self.get_logger().info("Executing the new goal")
+        self.goal_handle_.execute()
 
     def execute_callback(self, goal_handle):
         points = self.goal.trajectory.points
@@ -75,6 +89,9 @@ class EliteArmTrajectoryAction():
                 break
 
         goal_handle.succeed()
+
+        # reset the global goal_handle
+        self.goal_handle_ = None
 
         # ToDo: Handle errors and failures
         result = FollowJointTrajectory.Result()
