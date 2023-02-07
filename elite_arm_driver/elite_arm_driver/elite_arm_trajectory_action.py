@@ -32,7 +32,7 @@ class EliteArmTrajectoryAction():
 
     def cancel_callback(self, goal_handle):
         # Accepts or rejects a client request to cancel an action
-        print("==========================stop===========================")
+        self.get_logger().info("Stopping initiated")
         self._stop_move()
         return CancelResponse.ACCEPT
 
@@ -79,10 +79,12 @@ class EliteArmTrajectoryAction():
 
         goal_handle.succeed()
 
-        # ToDo: Handle errors
+        # ToDo: Handle errors and failures
         result = FollowJointTrajectory.Result()
         result.error_code = result.SUCCESSFUL
         result.error_string = "Completed"
+
+        self.get_logger().info("FollowJointTrajectory Completed the Goal")
 
         return result
 

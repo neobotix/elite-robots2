@@ -40,7 +40,8 @@ class EliteArmMove:
         return response
 
     def stop_move_cb(self, request, response):
-        print("recv Stop Move")
+        self.get_logger().info("stop_move_server recieved command to stop the robot")
         result_ = self.elite_robot.stop()  # pylint: disable=E1101
         response.result = result_
+        # ToDo: Log the response
         return response 
