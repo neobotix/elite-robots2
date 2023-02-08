@@ -19,7 +19,7 @@ class EliteArmTrajectoryAction():
             FollowJointTrajectory,
             'arm_controller/follow_joint_trajectory',
             execute_callback=self.execute_callback,
-            callback_group=MutuallyExclusiveCallbackGroup(),
+            callback_group=ReentrantCallbackGroup(),
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback,
             handle_accepted_callback=self.handle_accepted_callback)
@@ -35,9 +35,9 @@ class EliteArmTrajectoryAction():
     def cancel_callback(self, goal_handle):
         # Accepts or rejects a client request to cancel an action
         self.get_logger().info("Stopping initiated")
-        self._stop_move()
-        self.goal_handle_.canceled()
+        a = self._stop_move()
         self.goal_handle_ = None
+        self.elite_robot.TT_clear_buff()
         return CancelResponse.ACCEPT
 
     def handle_accepted_callback(self, goal_handle):
@@ -47,7 +47,7 @@ class EliteArmTrajectoryAction():
                 self.get_logger().info("Stopping the executing goal")
                 self._stop_move()
                 self.goal_handle_.canceled()
-        
+
         self.goal_handle_ = goal_handle
         self.get_logger().info("Executing the new goal")
         self.goal_handle_.execute()
@@ -81,6 +81,7 @@ class EliteArmTrajectoryAction():
             temp_joint = joint[i*8:i*8+6]
             self.elite_robot.TT_add_joint(temp_joint)
             last_joint = temp_joint
+
         while 1:
             time.sleep(0.1)
             self.elite_robot:EC
