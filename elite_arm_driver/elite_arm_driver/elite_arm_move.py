@@ -4,7 +4,7 @@ from elite_msgs.srv import CartMove, JointMove, StopMove
 
 class EliteArmMove:
     def __init__(self, ):
-        print("ready to move arm")
+        self.get_logger().info("ready to move arm")
         self.cart_mov_srv = self.create_service(CartMove, 'cart_move_server', self.cart_move_cb)
         self.joint_mov_srv = self.create_service(JointMove, 'joint_move_server', self.joint_move_cb)
         self.stop_mov_srv = self.create_service(StopMove, 'stop_move_server', self.stop_move_cb)
