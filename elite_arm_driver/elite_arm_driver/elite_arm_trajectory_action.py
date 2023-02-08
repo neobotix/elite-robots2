@@ -36,6 +36,8 @@ class EliteArmTrajectoryAction():
         # Accepts or rejects a client request to cancel an action
         self.get_logger().info("Stopping initiated")
         self._stop_move()
+        self.goal_handle_.canceled()
+        self.goal_handle_ = None
         return CancelResponse.ACCEPT
 
     def handle_accepted_callback(self, goal_handle):
