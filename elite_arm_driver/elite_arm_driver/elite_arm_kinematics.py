@@ -6,7 +6,7 @@ import math
 
 class EliteArmKinematics():
     def __init__(self):
-        print("Listening for kinematics request")
+        self.get_logger("Listening for kinematics request")
         self.fk_srv = self.create_service(ForwardKinematic, 'forward_kinematics', self.forward_kinematics_cb)
         self.ik_srv = self.create_service(InverseKinematic, 'inverse_kinematics', self.inverse_kinematics_cb)
 
@@ -35,7 +35,7 @@ class EliteArmKinematics():
           target_point.append(math.degrees(angle))
 
         result = self.elite_robot.get_inverse_kinematic(
-            target_point, request.ref_joint,unit_type=0)
+            target_point, request.ref_joint, unit_type=0)
         if type(result) == tuple:
             response.result = False
         else:
