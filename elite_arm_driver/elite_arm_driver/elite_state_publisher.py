@@ -7,7 +7,7 @@ from std_msgs.msg import Header
 
 class EliteStatePublisher():
     def __init__(self):
-        print("starting elite state publishers")
+        self.get_logger().info("starting elite state publishers")
         # Publish joint states
         self.joint_state_publisher = self.create_publisher(JointState, "joint_states", 10)
         # Todo Ros parameter

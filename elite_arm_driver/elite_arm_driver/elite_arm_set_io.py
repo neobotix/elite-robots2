@@ -4,7 +4,7 @@ from elite_msgs.srv import SetAnalogIO, SetIO
 
 class EliteArmSetIO():
     def __init__(self):
-        print("starting elite arm set IO")
+        self.get_logger().info("starting elite arm set IO")
         self.digital_io_srv = self.create_service(SetIO, 'set_digital_io', self.digital_io_cb)
         self.analog_io_srv = self.create_service(SetAnalogIO, 'set_analog_io', self.analog_io_cb)
 
