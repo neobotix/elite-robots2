@@ -13,7 +13,7 @@ import time
 
 class EliteArmTrajectoryAction():
     def __init__(self, ):
-        print("starting elite arm trajectory action")
+        self.get_logger().info("starting elite arm trajectory action")
         self.action_server = ActionServer(
             self,
             FollowJointTrajectory,
@@ -35,9 +35,7 @@ class EliteArmTrajectoryAction():
     def cancel_callback(self, goal_handle):
         # Accepts or rejects a client request to cancel an action
         self.get_logger().info("Stopping initiated")
-        a = self._stop_move()
-        self.goal_handle_ = None
-        self.elite_robot.TT_clear_buff()
+        self._stop_move()
         return CancelResponse.ACCEPT
 
     def handle_accepted_callback(self, goal_handle):
@@ -78,6 +76,18 @@ class EliteArmTrajectoryAction():
         self.elite_robot.TT_init(t=time_stamp[1]*1000)
         last_joint = []
         for i in range(len(time_stamp)):
+            # check if cancellation is requested
+            if goal_handle.is_cancel_requested:
+                goal_handle.canceled()
+                
+                result = FollowJointTrajectory.Result()
+                result.error_code = result.SUCCESSFUL
+                result.error_string = "Cancelled"
+                
+                self.goal_handle_ = None
+                self.elite_robot.TT_clear_buff()
+                return result
+
             temp_joint = joint[i*8:i*8+6]
             self.elite_robot.TT_add_joint(temp_joint)
             last_joint = temp_joint
