@@ -55,19 +55,30 @@ This add's your setup script to the bashrc (need to restart the terminal for the
 
 ## Launching the nodes
 
-Real robot: 
+### Real robot: 
 
 1. Start the ros-node for bringing up the drivers:
 
-`ros2 run elite_arm_driver elite`
+`ros2 launch elite_arm_driver bringup.launch.py`
 
-You would see at the end of the terminal that `Robot startup success...`. If you do not get it, please check if you have switched the operating mode to the remote mode. 
+You would see at the end of the terminal with the rclpy log stating that `Robot startup success...`. If you do not get it, please check if you have switched the operating mode to the remote mode. 
 
 2. Start the planning pipeline by launching:
 
 `ros2 launch elite_moveit move_group.launch.py`
 
 You would see the RViz with the robot model spawned. 
+
+### Simulated robot:
+
+1. Starting the necessary Gazebo-ROS nodes, ros2 joint controllers and joint state broadcasters
+
+`ros2 launch elite_arm_driver simulate_ec66.launch.py`
+
+2. Start the planning pipeline by launching:
+
+`ros2 launch elite_moveit move_group.launch.py`
+
 
 More to follow ...
 
