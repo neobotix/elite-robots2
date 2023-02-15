@@ -77,7 +77,7 @@ You would see the RViz with the robot model spawned.
 
 2. Start the planning pipeline by launching:
 
-`ros2 launch elite_moveit move_group.launch.py`
+`ros2 launch elite_moveit move_group.launch.py use_sim_time:=True`
 
 
 More to follow ...
