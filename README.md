@@ -30,6 +30,10 @@ We assume that ROS-Rolling or ROS-Humble is installed and the user has a basic u
 
 `sudo apt-get install ros-$ROS_DISTRO-moveit-*`
 
+5. Install Gazebo packages and ros2 controllers
+
+`sudo apt-get install ros-$ROS_DISTRO-gazebo-ros ros-$ROS_DISTRO-gazebo-ros2-control ros-humble-ros2-controllers ros-humble-ros2-control`
+
 ## Package setup
 
 For this step, we need to create a colcon_ws (more details on the build system: https://docs.ros.org/en/humble/How-To-Guides/Ament-CMake-Documentation.html)
@@ -77,8 +81,6 @@ You would see the RViz with the robot model spawned.
 
 2. Start the planning pipeline by launching:
 
-`ros2 launch elite_moveit move_group.launch.py use_sim_time:=True`
+`ros2 launch elite_moveit move_group_sim.launch.py use_sim_time:=True`
 
-
-More to follow ...
-
+You would see the RViz with the robot model spawned. 
