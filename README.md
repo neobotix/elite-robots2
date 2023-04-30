@@ -71,7 +71,9 @@ You would see at the end of the terminal with the rclpy log stating that `Robot 
 
 `ros2 launch elite_moveit move_group.launch.py`
 
-You would see the RViz with the robot model spawned. 
+You would see the RViz with the robot model spawned.
+
+*Note:* Please make sure to do velocity scaling before sending goals to the robot. The velocity scaling parameters can be found in RViz under the motionplanning plugin. Please read through the [Moveit 2 documentation carefully to know more about Moveit.](https://moveit.picknik.ai/humble/index.html)
 
 ### Simulated robot:
 
