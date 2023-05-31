@@ -2,6 +2,11 @@
 
 elite-robots2 is an open source and community-driven package consisting of the ros-drivers for the arms manufactured by Elite. This ROS 2 package is a direct migration of the ROS package, which can be found here https://github.com/Elite-Robots/ROS 
 
+This package was developed by Neobotix. This package is currently maintained by Neobotix and Elite Robots. 
+
+![new_neobotix_1920px](https://github.com/neobotix/elite-robots2/assets/20242192/1377441b-a9bb-42bd-9a8b-c190773d13d4)
+
+
 At the moment, this ROS 2 package supports the EC66 variant. But a Pull Request would well and truly be accepted for other variants of the Elite arm. 
 
 Also this package consists of the simulation for the EC 66 arm.
