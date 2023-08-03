@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rclpy
 from elite_msgs.srv import ForwardKinematic, InverseKinematic
-import transform3d as tfs
+import transforms3d as tfs
 import math
 
 class EliteArmKinematics():
