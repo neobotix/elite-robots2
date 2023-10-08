@@ -16,14 +16,14 @@ import xacro
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='False')
 
-    urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description.urdf')
+    urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'cs66_description.urdf')
     doc = xacro.parse(open(urdf)) 
     xacro.process_doc(doc) 
 
     spawn_entity = Node(
         package='gazebo_ros',
         executable='spawn_entity.py',
-        arguments=['-entity', "ec66", '-topic', "robot_description"],
+        arguments=['-entity', "cs66", '-topic', "robot_description"],
         output='screen')
 
     default_world_path = os.path.join(get_package_share_directory('elite_description'), 'world', 'empty_world.world')

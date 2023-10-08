@@ -15,7 +15,7 @@ from pathlib import Path
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='False')
 
-    urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description_real.urdf')
+    urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'cs66_description.urdf')
 
     start_robot_state_publisher_cmd = Node(
         package='robot_state_publisher',
