@@ -33,9 +33,9 @@ def load_yaml(package_name, file_path):
 
 def generate_launch_description():
     moveit_config = (
-        MoveItConfigsBuilder("ec66", package_name="elite_moveit")
-        .robot_description(file_path="config/ec66.urdf.xacro")
-        .robot_description_semantic(file_path="config/ec66.srdf")
+        MoveItConfigsBuilder("cs66", package_name="elite_moveit")
+        .robot_description(file_path="config/cs66.urdf.xacro")
+        .robot_description_semantic(file_path="config/cs66.srdf")
         .robot_description_kinematics(file_path="config/kinematics.yaml")
         .planning_pipelines(default_planning_pipeline="ompl", pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
         .to_moveit_configs()
@@ -131,5 +131,5 @@ def generate_launch_description():
 
     return ld
 
-    # moveit_config = MoveItConfigsBuilder("ec66", package_name="elite_moveit").to_moveit_configs()
+    # moveit_config = MoveItConfigsBuilder("cs66", package_name="elite_moveit").to_moveit_configs()
     # return generate_move_group_launch(moveit_config)

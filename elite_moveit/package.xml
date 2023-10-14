@@ -2,11 +2,11 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>elite_moveit</name>
-  <version>0.1.0</version>
+  <version>0.3.0</version>
   <description>
-     An automatically generated package with all the configuration and launch files for using the ec66 with the MoveIt Motion Planning Framework
+     An automatically generated package with all the configuration and launch files for using the cs66 with the MoveIt Motion Planning Framework
   </description>
-  <maintainer email="padmanabhan@neobotix.de">padmanabhan</maintainer>
+  <maintainer email="padhupradheep@gmail.com">Pradheep</maintainer>
 
   <license>BSD</license>
 
@@ -14,7 +14,7 @@
   <url type="bugtracker">https://github.com/ros-planning/moveit2/issues</url>
   <url type="repository">https://github.com/ros-planning/moveit2</url>
 
-  <author email="padmanabhan@neobotix.de">padmanabhan</author>
+  <author email="padhupradheep@gmail.com">Pradheep</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
