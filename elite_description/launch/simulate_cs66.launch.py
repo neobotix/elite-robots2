@@ -14,6 +14,8 @@ import xacro
 
 
 def generate_launch_description():
+    default_world_path = os.path.join(get_package_share_directory('neo_gz_worlds'), 'worlds', 'neo_workshop.sdf')
+
     use_sim_time = LaunchConfiguration('use_sim_time', default='False')
 
     urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'cs66_description.urdf')
@@ -21,12 +23,13 @@ def generate_launch_description():
     xacro.process_doc(doc) 
 
     spawn_entity = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
-        arguments=['-entity', "cs66", '-topic', "robot_description"],
-        output='screen')
-
-    default_world_path = os.path.join(get_package_share_directory('elite_description'), 'world', 'empty_world.world')
+        package='ros_gz_sim',
+        executable='create',
+        name='spawn_model',
+        output='screen',
+        arguments=[
+            '-topic', "robot_description",
+            '-name', "ec66"])
 
     start_robot_state_publisher_cmd = Node(
         package='robot_state_publisher',
@@ -36,15 +39,12 @@ def generate_launch_description():
         parameters=[{'robot_description':doc.toxml(), 'use_sim_time': use_sim_time}]
         )
 
-    gazebo = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
-            ),
-            launch_arguments={
-                'world': default_world_path,
-                'verbose': 'true',
-            }.items(),
+    ignition = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         )
+        , launch_arguments={'ign_args': ['-r ', default_world_path]}.items()
+      )
 
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
@@ -59,4 +59,4 @@ def generate_launch_description():
         arguments=["arm_controller", "-c", "/controller_manager"],
     )
 
-    return LaunchDescription([start_robot_state_publisher_cmd, joint_state_broadcaster_spawner, initial_joint_controller_spawner_stopped, gazebo, spawn_entity])
+    return LaunchDescription([start_robot_state_publisher_cmd, joint_state_broadcaster_spawner, initial_joint_controller_spawner_stopped, ignition, spawn_entity])

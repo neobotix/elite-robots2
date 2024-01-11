@@ -36,9 +36,6 @@
             <geometry>
                 <mesh filename="package://elite_description/meshes/cs66/link1.dae" />
             </geometry>
-            <material name="">
-                <color rgba="1 1 1 1" />
-            </material>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -66,9 +63,6 @@
             <geometry>
                 <mesh filename="package://elite_description/meshes/cs66/link2.dae" />
             </geometry>
-            <material name="">
-                <color rgba="1 1 1 1" />
-            </material>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -96,9 +90,6 @@
             <geometry>
                 <mesh filename="package://elite_description/meshes/cs66/link3.dae" />
             </geometry>
-            <material name="">
-                <color rgba="1 1 1 1" />
-            </material>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -126,9 +117,6 @@
             <geometry>
                 <mesh filename="package://elite_description/meshes/cs66/link4.dae" />
             </geometry>
-            <material name="">
-                <color rgba="1 1 1 1" />
-            </material>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -156,9 +144,6 @@
             <geometry>
                 <mesh filename="package://elite_description/meshes/cs66/link5.dae" />
             </geometry>
-            <material name="">
-                <color rgba="1 1 1 1" />
-            </material>
         </visual>
         <collision>
             <origin xyz="0 -0.0965 0" rpy="1.5708 0 0" />
@@ -186,9 +171,6 @@
             <geometry>
                 <mesh filename="package://elite_description/meshes/cs66/link6.dae" />
             </geometry>
-            <material name="">
-                <color rgba="0.79216 0.81961 0.93333 1" />
-            </material>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -214,7 +196,7 @@
 
     <ros2_control name="GazeboSystem" type="system">
         <hardware>
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
                <parameters>$(find elite_description)/config/joint_names_cs66_description.yaml  </parameters>
             </hardware>
         <joint name="joint1">
@@ -298,7 +280,7 @@
     </ros2_control>
 
     <gazebo>
-        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
            <parameters> $(find elite_description)/config/joint_names_cs66_description.yaml </parameters>
         </plugin>
     </gazebo>
