@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="min_val" value="-3.15"/>
+    <xacro:property name="max_val" value="3.15"/>
+
+    <!-- Macro for defining joint interfaces -->
+    <xacro:macro name="joint_interface_macro" params="joint_name">
+        <joint name="${joint_name}">
+        <command_interface name="position">
+            <param name="min">${min_val}</param>
+            <param name="max">${max_val}</param>
+        </command_interface>
+        <command_interface name="velocity">
+            <param name="min">${min_val}</param>
+            <param name="max">${max_val}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        </joint>
+    </xacro:macro>
+
+    <!-- Macro for ROS2 Control Configuration -->
+    <xacro:macro name="ros2_control_macro" params="name plugin parameters">
+        <ros2_control name="${name}" type="system">
+        <hardware>
+            <plugin>${plugin}</plugin>
+            <parameters>${parameters}</parameters>
+        </hardware>
+        <!-- Directly instantiate each joint interface -->
+        <xacro:joint_interface_macro joint_name="joint1"/>
+        <xacro:joint_interface_macro joint_name="joint2"/>
+        <xacro:joint_interface_macro joint_name="joint3"/>
+        <xacro:joint_interface_macro joint_name="joint4"/>
+        <xacro:joint_interface_macro joint_name="joint5"/>
+        <xacro:joint_interface_macro joint_name="joint6"/>
+    
+        </ros2_control>
+    </xacro:macro>
+
+    <!-- Macro for Gazebo Configuration -->
+    <xacro:macro name="gazebo_macro" params="filename parameters">
+        <gazebo>
+        <plugin filename="${filename}" name="gazebo_ros2_control">
+            <parameters>${parameters}</parameters>
+        </plugin>
+        </gazebo>
+    </xacro:macro>
+
+</robot>

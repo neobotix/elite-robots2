@@ -1,0 +1,31 @@
+joint_limits:
+  joint1:
+    lower: -6.2832  # -360 degrees
+    upper: 6.2832   # 360 degrees
+    effort: 150.0
+    velocity: 2.61993  # 150 degrees/s
+  joint2:
+    lower: -3.14  # -180 degrees
+    upper: 0     # 0 degrees
+    effort: 150.0
+    velocity: 2.61993  # 150 degrees/s
+  joint3:
+    lower: -2.7925  # -160 degrees
+    upper: 2.7925   # 160 degrees
+    effort: 150.0
+    velocity: 3.31613  # 190 degrees/s
+  joint4:
+    lower: -6.2832  # -360 degrees
+    upper: 6.2832   # 360 degrees
+    effort: 28.0
+    velocity: 4.53786  # 260 degrees/s
+  joint5:
+    lower: -6.2832  # -360 degrees
+    upper: 6.2832   # 360 degrees
+    effort: 28.0
+    velocity: 4.53786  # 260 degrees/s
+  joint6:
+    lower: -6.2832  # -360 degrees
+    upper: 6.2832   # 360 degrees
+    effort: 28.0
+    velocity: 4.53786  # 260 degrees/s

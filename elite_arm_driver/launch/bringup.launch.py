@@ -11,6 +11,7 @@ from launch_ros.actions import Node
 from launch.conditions import IfCondition
 import os
 from pathlib import Path
+import xacro
 from launch.launch_context import LaunchContext
 
 def execution_stage(context: LaunchContext):
@@ -20,7 +21,7 @@ def execution_stage(context: LaunchContext):
     timer_period = LaunchConfiguration('timer_period')
     start_rviz = LaunchConfiguration('start_rviz')
 
-    elite_description = os.path.join(get_package_share_directory('elite_description'), 'launch')
+    elite_gazebo = os.path.join(get_package_share_directory('elite_gazebo'), 'launch')
 
     bringup_arm_driver = Node(
         package="elite_arm_driver",
@@ -33,11 +34,12 @@ def execution_stage(context: LaunchContext):
     )
 
     rviz_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([elite_description, '/elite_description.launch.py']),
+            PythonLaunchDescriptionSource([elite_gazebo, '/elite_description.launch.py']),
             condition=IfCondition(start_rviz)
         )
 
-    urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description_real.urdf')
+    robot_description_urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description.urdf.xacro')
+    robot_description_xacro = xacro.process_file(robot_description_urdf).toxml()
 
     start_robot_state_publisher_cmd = Node(
         package='robot_state_publisher',
@@ -45,7 +47,7 @@ def execution_stage(context: LaunchContext):
         name='robot_state_publisher',
         output='screen',
         parameters=[{'robot_description':Command([
-            "xacro", " ", urdf])}]
+            "xacro", " ", robot_description_xacro])}]
         )
 
     return [
