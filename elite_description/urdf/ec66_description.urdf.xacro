@@ -1,46 +1,45 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ec66">
-    <!--set use_gazebo = false for implementation on real rover-->
-    <xacro:arg name="use_gazebo" default="true"/>
 
+    <!-- Set use_gazebo = false for implementation on real rover -->
+    <xacro:arg name="use_gazebo" default="false"/>
+
+    <!-- Include macros -->
     <xacro:include filename="$(find elite_description)/urdf/macro/ec66_macro.urdf.xacro" />
+
+    <!-- World Link and Joint -->
     <link name="world" />
     <joint name="world_joint" type="fixed">
         <origin xyz="0 0 0" rpy="0 0 0" />
         <parent link="world" />
         <child link="base_link" />
     </joint>
+
     <!-- Base Link -->
     <xacro:link_macro name="base_link" />
 
-    <!-- Link1 -->
+    <!-- Link1 and Joint1 -->
     <xacro:link_macro name="link1" />
-    <!-- Joint1 -->
     <xacro:joint_macro name="joint1" />
 
-    <!-- Link2 -->
+    <!-- Link2 and Joint2 -->
     <xacro:link_macro name="link2" />
-    <!-- Joint2 -->
     <xacro:joint_macro name="joint2" />
 
-    <!-- Link3 -->
+    <!-- Link3 and Joint3 -->
     <xacro:link_macro name="link3" />
-    <!-- Joint3 -->
     <xacro:joint_macro name="joint3" />
 
-    <!-- Link4 -->
+    <!-- Link4 and Joint4 -->
     <xacro:link_macro name="link4" />
-    <!-- Joint4 -->
     <xacro:joint_macro name="joint4" />
 
-    <!-- Link5 -->
+    <!-- Link5 and Joint5 -->
     <xacro:link_macro name="link5" />
-    <!-- Joint5 -->
     <xacro:joint_macro name="joint5" />
 
-    <!-- Link6 -->
+    <!-- Link6 and Joint6 -->
     <xacro:link_macro name="link6" />
-    <!-- Joint6 -->
     <xacro:joint_macro name="joint6" />
 
     <!-- Flange -->
@@ -55,4 +54,5 @@
     <xacro:if value="$(arg use_gazebo)">
         <xacro:include filename="$(find elite_description)/urdf/gazebo_ros2_control_ec66.urdf.xacro" />
     </xacro:if>
+
 </robot>

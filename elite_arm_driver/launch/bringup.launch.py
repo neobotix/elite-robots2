@@ -21,7 +21,7 @@ def execution_stage(context: LaunchContext):
     timer_period = LaunchConfiguration('timer_period')
     start_rviz = LaunchConfiguration('start_rviz')
 
-    elite_gazebo = os.path.join(get_package_share_directory('elite_gazebo'), 'launch')
+    elite_description_pkg = get_package_share_directory('elite_description')
 
     bringup_arm_driver = Node(
         package="elite_arm_driver",
@@ -34,11 +34,11 @@ def execution_stage(context: LaunchContext):
     )
 
     rviz_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([elite_gazebo, '/elite_description.launch.py']),
+            PythonLaunchDescriptionSource(os.path.join(elite_description_pkg, 'launch', 'elite_description.launch.py')),
             condition=IfCondition(start_rviz)
-        )
+    )
 
-    robot_description_urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description.urdf.xacro')
+    robot_description_urdf = os.path.join(elite_description_pkg, 'urdf', 'ec66_description.urdf.xacro')
     robot_description_xacro = xacro.process_file(robot_description_urdf).toxml()
 
     start_robot_state_publisher_cmd = Node(
