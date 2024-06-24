@@ -84,10 +84,42 @@ You would see the RViz with the robot model spawned.
 
 1. Starting the necessary Gazebo-ROS nodes, ros2 joint controllers and joint state broadcasters
 
-`ros2 launch elite_description simulate_ec66.launch.py`
+`ros2 launch elite_gazebo simulate_elite.launch.py`
+
+<p align="center">
+  <img src="https://github.com/AdarshKaran/elite-robots2/assets/112091438/8d1f820b-a272-4d69-a0ab-f79d53d22921" alt="Gazebo Simulation" width="700">
+  <br>
+  <em>Gazebo Simulation</em>
+</p>
 
 2. Start the planning pipeline by launching:
 
 `ros2 launch elite_moveit move_group_sim.launch.py use_sim_time:=True`
 
 You would see the RViz with the robot model spawned. 
+
+### Visualize robot:
+
+1. Visualize the robotic arm in Rviz by starting the necessary RViz node, robot state publishers and joint state publishers
+
+`ros2 launch elite_description elite_description.launch.py use_joint_state_publisher_gui:=False`
+
+<p align="center">
+  <img src="https://github.com/AdarshKaran/elite-robots2/assets/112091438/1e527310-da5c-410f-898b-aebdeb2e1607" alt="RViz Visualization" width="700">
+  <br>
+  <em>RViz Visualization</em>
+</p>
+
+2. Control the joints using joint state publisher gui by launching
+
+`ros2 launch elite_description elite_description.launch.py`
+
+<p align="center">
+  <img src="https://github.com/AdarshKaran/elite-robots2/assets/112091438/a2725641-153d-4422-a5a7-78e8c93c1d58" alt="RViz Visualization with joint state publisher gui" width="700">
+  <br>
+  <em>RViz Visualization with joint state publisher gui</em>
+</p>
+
+Sample video of working: 
+
+https://github.com/AdarshKaran/elite-robots2/assets/112091438/7a53e76e-e20b-401a-92e4-629536bd4968
