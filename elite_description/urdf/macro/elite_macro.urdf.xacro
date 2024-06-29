@@ -4,13 +4,13 @@
   <!-- Load parameters from YAML files -->
   <xacro:property 
     name="config_joint_limits" 
-    value="${xacro.load_yaml('$(find elite_description)/config/joint_limits_ec66.yaml')}"/>
+    value="${xacro.load_yaml('$(find elite_description)/config/$(arg arm_type)/joint_limits_ec66.yaml')}"/>
   <xacro:property 
     name="config_joint_origins" 
-    value="${xacro.load_yaml('$(find elite_description)/config/joint_origins_ec66.yaml')}"/>
+    value="${xacro.load_yaml('$(find elite_description)/config/$(arg arm_type)/joint_origins_ec66.yaml')}"/>
   <xacro:property 
     name="config_link_inertials" 
-    value="${xacro.load_yaml('$(find elite_description)/config/link_inertials_ec66.yaml')}"/>
+    value="${xacro.load_yaml('$(find elite_description)/config/$(arg arm_type)/link_inertials_ec66.yaml')}"/>
 
   <!-- Extract subsections from yaml dictionaries -->
   <xacro:property name="joint_limits" value="${config_joint_limits['joint_limits']}"/>

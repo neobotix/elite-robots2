@@ -15,23 +15,24 @@ This code is used for simulating the robotic arm in an empty Gazebo world.
 """
 
 # OpaqueFunction is used to perform setup actions during launch through a Python function
-def launch_setup(context, use_sim_time_arg):
+def launch_setup(context, use_sim_time_arg, use_arm_type_arg):
     # Create a list to hold all the nodes
     launch_actions = []
     use_sim_time = use_sim_time_arg.perform(context).lower() == 'true'
+    use_arm_type = use_arm_type_arg.perform(context)
 
     # Get the required paths for the world and robot robot_description_urdf
-    robot_description_urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'ec66_description.urdf.xacro')
+    robot_description_urdf = os.path.join(get_package_share_directory('elite_description'), 'urdf', 'elite_description.urdf.xacro')
     default_world_path = os.path.join(get_package_share_directory('elite_gazebo'), 'world', 'empty_world.world')
     # use_gazebo is set to True since this code launches the robot in simulation
-    xacro_args = {'use_gazebo': "true"}
+    xacro_args = {'use_gazebo': "true", 'arm_type': use_arm_type}
     # Use xacro to process the file
     robot_description_xacro = xacro.process_file(robot_description_urdf, mappings=xacro_args).toxml()
 
     spawn_entity = Node(
         package='gazebo_ros', 
         executable='spawn_entity.py',
-        arguments=['-entity', "ec66",'-topic', '/robot_description'], 
+        arguments=['-entity', use_arm_type,'-topic', '/robot_description'], 
         output='screen'
     )
 
@@ -82,13 +83,18 @@ def generate_launch_description():
             'use_sim_time', default_value='True',
             description='Use simulation clock if true (True/False)'
         )
-
+    declare_use_arm_type_arg = DeclareLaunchArgument(
+            'arm_type', default_value='ec66',
+            description='Type of the arm to be launched(Currently only ec66 is supported)'
+        )
     # Create launch configuration variables
     use_sim_time_arg = LaunchConfiguration('use_sim_time')
+    use_arm_type_arg = LaunchConfiguration('arm_type')
 
     ld.add_action(declare_use_sim_time_arg)
+    ld.add_action(declare_use_arm_type_arg)
 
-    context_arguments = [use_sim_time_arg]
+    context_arguments = [use_sim_time_arg, use_arm_type_arg]
     opq_func = OpaqueFunction(  
         function = launch_setup,
         args = context_arguments

@@ -20,6 +20,7 @@ def execution_stage(context: LaunchContext):
     use_fake = LaunchConfiguration('use_fake')
     timer_period = LaunchConfiguration('timer_period')
     start_rviz = LaunchConfiguration('start_rviz')
+    use_arm_type = LaunchConfiguration('arm_type')
 
     elite_description_pkg = get_package_share_directory('elite_description')
 
@@ -38,8 +39,11 @@ def execution_stage(context: LaunchContext):
             condition=IfCondition(start_rviz)
     )
 
-    robot_description_urdf = os.path.join(elite_description_pkg, 'urdf', 'ec66_description.urdf.xacro')
-    robot_description_xacro = xacro.process_file(robot_description_urdf).toxml()
+    robot_description_urdf = os.path.join(elite_description_pkg, 'urdf', 'elite_description.urdf.xacro')
+    # use_gazebo is set to False since no simulation is involved
+    xacro_args = {'use_gazebo': "false", 'arm_type': use_arm_type}
+    # Use xacro to process the file
+    robot_description_xacro = xacro.process_file(robot_description_urdf, mappings=xacro_args).toxml()
 
     start_robot_state_publisher_cmd = Node(
         package='robot_state_publisher',
@@ -76,12 +80,17 @@ def generate_launch_description():
         'start_rviz',
         default_value='False')
 
+    use_arm_type_arg = DeclareLaunchArgument(
+        'arm_type',
+        default_value='ec66')
+
     launch_args = []
     launch_args.extend([ip_addr_launch_arg,
         auto_connect_launch_arg,
         use_fake_launch_arg,
         timer_period_launch_arg,
-        start_rviz_launch_arg])
+        start_rviz_launch_arg,
+        use_arm_type_arg])
 
     opq_function = OpaqueFunction(function=execution_stage)
     return LaunchDescription(launch_args + [opq_function])

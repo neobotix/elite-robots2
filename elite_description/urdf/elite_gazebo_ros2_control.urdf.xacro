@@ -1,16 +1,16 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ec66">
 
-    <xacro:include filename="$(find elite_description)/urdf/macro/ros2_control_ec66_macro.urdf.xacro" />
+    <xacro:include filename="$(find elite_description)/urdf/macro/elite_ros2_control_macro.urdf.xacro" />
 
     <!-- Use the ros2_control_macro with individual joints -->
     <xacro:ros2_control_macro 
         name="GazeboSystem"
         plugin="gazebo_ros2_control/GazeboSystem"
-        parameters="$(find elite_gazebo)/config/ros2_control_ec66.yaml" />
+        parameters="$(find elite_gazebo)/config/$(arg arm_type)_ros2_control.yaml" />
 
     <!-- Use the gazebo_macro -->
     <xacro:gazebo_macro 
         filename="libgazebo_ros2_control.so"
-        parameters="$(find elite_gazebo)/config/ros2_control_ec66.yaml" />      
+        parameters="$(find elite_gazebo)/config/$(arg arm_type)_ros2_control.yaml" />      
 </robot>

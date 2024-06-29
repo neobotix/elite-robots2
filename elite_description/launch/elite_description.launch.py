@@ -19,7 +19,7 @@ This code is used for debugging, quick testing, and visualization of the robotic
 """
 
 # OpaqueFunction is used to perform setup actions during launch through a Python function
-def launch_setup(context, use_sim_time_arg, use_joint_state_publisher_gui_arg):
+def launch_setup(context, use_sim_time_arg, use_joint_state_publisher_gui_arg, use_arm_type_arg):
     # Create a list to hold all the nodes
     launch_actions = []
 
@@ -27,12 +27,16 @@ def launch_setup(context, use_sim_time_arg, use_joint_state_publisher_gui_arg):
 
     use_sim_time = use_sim_time_arg.perform(context).lower() == 'true'
     use_joint_state_publisher_gui = use_joint_state_publisher_gui_arg.perform(context)
+    use_arm_type = use_arm_type_arg.perform(context)
 
-    robot_description_urdf = os.path.join(elite_description_pkg, 'urdf', 'ec66_description.urdf.xacro')
+    robot_description_urdf = os.path.join(elite_description_pkg, 'urdf', 'elite_description.urdf.xacro')
 
+    # use_gazebo is set to False since no simulation is involved
+    xacro_args = {'use_gazebo': "false", 'arm_type': use_arm_type}
     # Use xacro to process the file
-    robot_description_xacro = xacro.process_file(robot_description_urdf).toxml()
-    rviz_config = os.path.join(elite_description_pkg, 'rviz', 'ec66_rviz.rviz')
+    robot_description_xacro = xacro.process_file(robot_description_urdf, mappings=xacro_args).toxml()
+
+    rviz_config = os.path.join(elite_description_pkg, 'rviz', 'elite_rviz.rviz')
 
     # Start the joint state publisher gui only if use_joint_state_publisher_gui is True
     start_joint_state_publisher_gui_cmd = Node(
@@ -85,19 +89,24 @@ def generate_launch_description():
             'use_sim_time', default_value='False',
             description='Use simulation clock if True (True/False)'
         )
-
     declare_use_joint_state_publisher_gui_arg = DeclareLaunchArgument(
             'use_joint_state_publisher_gui', default_value='True',
             description='Use joint state publisher gui if True (True/False)'
         )
+    declare_use_arm_type_arg = DeclareLaunchArgument(
+            'arm_type', default_value='ec66',
+            description='Type of arm to be launched (ec66)'
+        )
 
     use_sim_time_arg = LaunchConfiguration('use_sim_time')
     use_joint_state_publisher_gui_arg = LaunchConfiguration('use_joint_state_publisher_gui')
+    use_arm_type_arg = LaunchConfiguration('arm_type')
 
     ld.add_action(declare_use_sim_time_arg)
     ld.add_action(declare_use_joint_state_publisher_gui_arg)
+    ld.add_action(declare_use_arm_type_arg)
 
-    context_arguments = [use_sim_time_arg, use_joint_state_publisher_gui_arg]
+    context_arguments = [use_sim_time_arg, use_joint_state_publisher_gui_arg, use_arm_type_arg]
     opq_func = OpaqueFunction(  
         function = launch_setup,
         args = context_arguments
