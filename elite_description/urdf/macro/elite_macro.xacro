@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Include macros -->
+    <xacro:include filename="$(find elite_description)/urdf/macro/elite_common.xacro" />
+
+    <xacro:macro name="elite_robot" params="
+        name
+        tf_prefix
+        arm_parent
+        *origin
+        joint_limits_parameters_file
+        joint_origins_parameters_file
+        link_inertials_parameters_file
+        ">
+
+        <!-- World Link and Joint -->
+        <xacro:if value="${arm_parent == 'world'}">
+            <link name="${tf_prefix}world" />
+        </xacro:if>
+        <joint name="${tf_prefix}${arm_parent}_joint" type="fixed">
+            <xacro:insert_block name="origin" />
+            <parent link="${tf_prefix}${arm_parent}" />
+            <child link="${tf_prefix}base_link" />
+        </joint>
+
+        <!-- Base Link -->
+        <xacro:link_macro name="${tf_prefix}base_link" />
+
+        <!-- Link1 and Joint1 -->
+        <xacro:link_macro name="${tf_prefix}link1" />
+        <xacro:joint_macro name="${tf_prefix}joint1" />
+
+        <!-- Link2 and Joint2 -->
+        <xacro:link_macro name="${tf_prefix}link2" />
+        <xacro:joint_macro name="${tf_prefix}joint2" />
+
+        <!-- Link3 and Joint3 -->
+        <xacro:link_macro name="${tf_prefix}link3" />
+        <xacro:joint_macro name="${tf_prefix}joint3" />
+
+        <!-- Link4 and Joint4 -->
+        <xacro:link_macro name="${tf_prefix}link4" />
+        <xacro:joint_macro name="${tf_prefix}joint4" />
+
+        <!-- Link5 and Joint5 -->
+        <xacro:link_macro name="${tf_prefix}link5" />
+        <xacro:joint_macro name="${tf_prefix}joint5" />
+
+        <!-- Link6 and Joint6 -->
+        <xacro:link_macro name="${tf_prefix}link6" />
+        <xacro:joint_macro name="${tf_prefix}joint6" />
+
+        <!-- Flange -->
+        <link name="${tf_prefix}flange" />
+        <joint name="${tf_prefix}flange_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="${tf_prefix}link6" />
+            <child link="${tf_prefix}flange" />
+        </joint>
+    </xacro:macro>
+</robot>

@@ -3,19 +3,19 @@
 
   <!-- Load parameters from YAML files -->
   <xacro:property 
-    name="config_joint_limits" 
-    value="${xacro.load_yaml('$(find elite_description)/config/$(arg arm_type)/joint_limits_ec66.yaml')}"/>
+    name="joint_limits_parameters" 
+    value="${xacro.load_yaml('$(arg joint_limit_params_file)')}"/>
   <xacro:property 
-    name="config_joint_origins" 
-    value="${xacro.load_yaml('$(find elite_description)/config/$(arg arm_type)/joint_origins_ec66.yaml')}"/>
+    name="joint_origins_parameters" 
+    value="${xacro.load_yaml('$(arg joint_origin_params_file)')}"/>
   <xacro:property 
-    name="config_link_inertials" 
-    value="${xacro.load_yaml('$(find elite_description)/config/$(arg arm_type)/link_inertials_ec66.yaml')}"/>
+    name="link_inertials_parameters" 
+    value="${xacro.load_yaml('$(arg link_inertials_params_file)')}"/>
 
   <!-- Extract subsections from yaml dictionaries -->
-  <xacro:property name="joint_limits" value="${config_joint_limits['joint_limits']}"/>
-  <xacro:property name="joint_origins" value="${config_joint_origins['joint_origins']}"/>
-  <xacro:property name="link_inertials" value="${config_link_inertials['link_inertials']}"/>
+  <xacro:property name="joint_limits" value="${joint_limits_parameters['joint_limits']}"/>
+  <xacro:property name="joint_origins" value="${joint_origins_parameters['joint_origins']}"/>
+  <xacro:property name="link_inertials" value="${link_inertials_parameters['link_inertials']}"/>
 
   <!-- Define macros using loaded parameters -->
   <xacro:macro name="link_macro" params="name">

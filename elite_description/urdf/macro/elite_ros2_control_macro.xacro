@@ -3,7 +3,14 @@
 
     <xacro:property name="min_val" value="-3.15"/>
     <xacro:property name="max_val" value="3.15"/>
-
+    <!-- Load parameters from YAML file -->
+    <xacro:property 
+        name="initial_positions_params" 
+        value="${xacro.load_yaml('$(arg initial_joint_positions_file)')}"
+    />
+    <!-- Extract subsections from yaml dictionaries -->
+    <xacro:property name="initial_positions" value="${initial_positions_params['initial_positions']}"/>
+  
     <!-- Macro for defining joint interfaces -->
     <xacro:macro name="joint_interface_macro" params="joint_name">
         <joint name="${joint_name}">
@@ -15,26 +22,29 @@
             <param name="min">${min_val}</param>
             <param name="max">${max_val}</param>
         </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+            <!-- initial position for the mock system and simulation -->
+            <param name="initial_value">${initial_positions[joint_name]}</param>
+        </state_interface>
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
         </joint>
     </xacro:macro>
 
     <!-- Macro for ROS2 Control Configuration -->
-    <xacro:macro name="ros2_control_macro" params="name plugin parameters">
+    <xacro:macro name="ros2_control_macro" params="name plugin parameters tf_prefix">
         <ros2_control name="${name}" type="system">
         <hardware>
             <plugin>${plugin}</plugin>
             <parameters>${parameters}</parameters>
         </hardware>
         <!-- Directly instantiate each joint interface -->
-        <xacro:joint_interface_macro joint_name="joint1"/>
-        <xacro:joint_interface_macro joint_name="joint2"/>
-        <xacro:joint_interface_macro joint_name="joint3"/>
-        <xacro:joint_interface_macro joint_name="joint4"/>
-        <xacro:joint_interface_macro joint_name="joint5"/>
-        <xacro:joint_interface_macro joint_name="joint6"/>
+        <xacro:joint_interface_macro joint_name="${tf_prefix}joint1"/>
+        <xacro:joint_interface_macro joint_name="${tf_prefix}joint2"/>
+        <xacro:joint_interface_macro joint_name="${tf_prefix}joint3"/>
+        <xacro:joint_interface_macro joint_name="${tf_prefix}joint4"/>
+        <xacro:joint_interface_macro joint_name="${tf_prefix}joint5"/>
+        <xacro:joint_interface_macro joint_name="${tf_prefix}joint6"/>
     
         </ros2_control>
     </xacro:macro>

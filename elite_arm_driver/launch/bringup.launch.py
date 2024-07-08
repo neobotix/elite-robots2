@@ -41,7 +41,7 @@ def execution_stage(context: LaunchContext):
 
     robot_description_urdf = os.path.join(elite_description_pkg, 'urdf', 'elite_description.urdf.xacro')
     # use_gazebo is set to False since no simulation is involved
-    xacro_args = {'use_gazebo': "false", 'arm_type': use_arm_type}
+    xacro_args = {'use_gazebo': "false", 'arm': use_arm_type}
     # Use xacro to process the file
     robot_description_xacro = xacro.process_file(robot_description_urdf, mappings=xacro_args).toxml()
 

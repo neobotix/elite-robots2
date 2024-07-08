@@ -1,59 +1,39 @@
-<?xml version="1.0" ?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ec66">
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="elite">
 
     <!-- Set use_gazebo = false for implementation on real rover -->
     <xacro:arg name="use_gazebo" default="false"/>
-    <xacro:arg name="arm_type" default="ec66"/>
-
+    <xacro:arg name="arm" default="ec66"/>
+    <xacro:arg name="use_moveit" default="false"/>
+    
     <!-- Include macros -->
-    <xacro:include filename="$(find elite_description)/urdf/macro/elite_macro.urdf.xacro" />
+    <xacro:include filename="$(find elite_description)/urdf/macro/elite_macro.xacro" />
 
-    <!-- World Link and Joint -->
-    <link name="world" />
-    <joint name="world_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <parent link="world" />
-        <child link="base_link" />
-    </joint>
+    <!--Elite arm parameters-->
+    <xacro:arg name="arm_parent" default="world"/>
+    <xacro:arg name="tf_prefix" default=""/>
+    <xacro:arg name="joint_limit_params_file" default="$(find elite_description)/config/$(arg arm)/joint_limits.yaml"/>
+    <xacro:arg name="joint_origin_params_file" default="$(find elite_description)/config/$(arg arm)/joint_origins.yaml"/>
+    <xacro:arg name="link_inertials_params_file" default="$(find elite_description)/config/$(arg arm)/link_inertials.yaml"/>
+    <xacro:arg name="initial_joint_positions_file" default="$(find elite_description)/config/$(arg arm)/initial_positions.yaml"/>
+    
+    <!--create arm-->
+    <xacro:elite_robot 
+        name="$(arg arm)"
+        tf_prefix="$(arg tf_prefix)"
+        arm_parent="$(arg arm_parent)"
+        joint_limits_parameters_file="$(arg joint_limit_params_file)"
+        joint_origins_parameters_file="$(arg joint_origin_params_file)"
+        link_inertials_parameters_file="$(arg link_inertials_params_file)"
+    >
+        <origin xyz="0 0 0" rpy="0 0 0" /> 
+    </xacro:elite_robot>
 
-    <!-- Base Link -->
-    <xacro:link_macro name="base_link" />
-
-    <!-- Link1 and Joint1 -->
-    <xacro:link_macro name="link1" />
-    <xacro:joint_macro name="joint1" />
-
-    <!-- Link2 and Joint2 -->
-    <xacro:link_macro name="link2" />
-    <xacro:joint_macro name="joint2" />
-
-    <!-- Link3 and Joint3 -->
-    <xacro:link_macro name="link3" />
-    <xacro:joint_macro name="joint3" />
-
-    <!-- Link4 and Joint4 -->
-    <xacro:link_macro name="link4" />
-    <xacro:joint_macro name="joint4" />
-
-    <!-- Link5 and Joint5 -->
-    <xacro:link_macro name="link5" />
-    <xacro:joint_macro name="joint5" />
-
-    <!-- Link6 and Joint6 -->
-    <xacro:link_macro name="link6" />
-    <xacro:joint_macro name="joint6" />
-
-    <!-- Flange -->
-    <link name="flange" />
-    <joint name="flange_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <parent link="link6" />
-        <child link="flange" />
-    </joint>
-
-    <!-- Include ros2_control configuration for simulation -->
-    <xacro:if value="$(arg use_gazebo)">
-        <xacro:include filename="$(find elite_description)/urdf/elite_gazebo_ros2_control.urdf.xacro" />
-    </xacro:if>
+    <xacro:unless value="$(arg use_moveit)">
+        <!-- Include ros2_control configuration for simulation -->
+        <xacro:if value="$(arg use_gazebo)">
+            <xacro:include filename="$(find elite_description)/urdf/elite_gazebo_ros2_control.urdf.xacro" />
+        </xacro:if>
+    </xacro:unless>
 
 </robot>
