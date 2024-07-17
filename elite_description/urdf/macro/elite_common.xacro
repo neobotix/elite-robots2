@@ -3,14 +3,14 @@
 
   <!-- Load parameters from YAML files -->
   <xacro:property 
-    name="joint_limits_parameters" 
-    value="${xacro.load_yaml('$(arg joint_limit_params_file)')}"/>
+      name="joint_limits_parameters" 
+      value="${xacro.load_yaml('$(arg joint_limit_params_file)')}"/>
   <xacro:property 
-    name="joint_origins_parameters" 
-    value="${xacro.load_yaml('$(arg joint_origin_params_file)')}"/>
+      name="joint_origins_parameters" 
+      value="${xacro.load_yaml('$(arg joint_origin_params_file)')}"/>
   <xacro:property 
-    name="link_inertials_parameters" 
-    value="${xacro.load_yaml('$(arg link_inertials_params_file)')}"/>
+      name="link_inertials_parameters" 
+      value="${xacro.load_yaml('$(arg link_inertials_params_file)')}"/>
 
   <!-- Extract subsections from yaml dictionaries -->
   <xacro:property name="joint_limits" value="${joint_limits_parameters['joint_limits']}"/>
@@ -19,54 +19,54 @@
 
   <!-- Define macros using loaded parameters -->
   <xacro:macro name="link_macro" params="name">
-    <link name="${name}">
-      <inertial>
-        <origin 
-            xyz="
-                ${link_inertials[name]['origin']['x']} 
-                ${link_inertials[name]['origin']['y']} 
-                ${link_inertials[name]['origin']['z']}
-                " 
-            rpy="0 0 0" />
-        <mass value="${link_inertials[name]['mass']}" />
-        <inertia 
-            ixx="${link_inertials[name]['inertia']['ixx']}" 
-            ixy="${link_inertials[name]['inertia']['ixy']}" 
-            ixz="${link_inertials[name]['inertia']['ixz']}" 
-            iyy="${link_inertials[name]['inertia']['iyy']}" 
-            iyz="${link_inertials[name]['inertia']['iyz']}" 
-            izz="${link_inertials[name]['inertia']['izz']}" />
-      </inertial>
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="package://elite_description/meshes/ec66/${name}.stl" />
-        </geometry>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="package://elite_description/meshes/ec66/${name}.stl" />
-        </geometry>
-      </collision>
-    </link>
+      <link name="${name}">
+          <inertial>
+              <origin 
+                  xyz="
+                      ${link_inertials[name]['origin']['x']} 
+                      ${link_inertials[name]['origin']['y']} 
+                      ${link_inertials[name]['origin']['z']}
+                      " 
+                  rpy="0 0 0" />
+              <mass value="${link_inertials[name]['mass']}" />
+              <inertia 
+                  ixx="${link_inertials[name]['inertia']['ixx']}" 
+                  ixy="${link_inertials[name]['inertia']['ixy']}" 
+                  ixz="${link_inertials[name]['inertia']['ixz']}" 
+                  iyy="${link_inertials[name]['inertia']['iyy']}" 
+                  iyz="${link_inertials[name]['inertia']['iyz']}" 
+                  izz="${link_inertials[name]['inertia']['izz']}" />
+          </inertial>
+          <visual>
+              <origin xyz="0 0 0" rpy="0 0 0" />
+              <geometry>
+                  <mesh filename="package://elite_description/meshes/ec66/${name}.stl" />
+              </geometry>
+          </visual>
+          <collision>
+              <origin xyz="0 0 0" rpy="0 0 0" />
+              <geometry>
+                  <mesh filename="package://elite_description/meshes/ec66/${name}.stl" />
+              </geometry>
+          </collision>
+      </link>
   </xacro:macro>
 
   <xacro:macro name="joint_macro" params="name">
-    <joint name="${name}" type="revolute">
-      <origin 
-        xyz="${joint_origins[name]['origin_xyz']}" 
-        rpy="${joint_origins[name]['origin_rpy']}" />
-      <parent link="${joint_origins[name]['parent']}" />
-      <child link="${joint_origins[name]['child']}" />
-      <axis xyz="0 0 1" />
-      <limit 
-        lower="${joint_limits[name]['lower']}" 
-        upper="${joint_limits[name]['upper']}" 
-        effort="${joint_limits[name]['effort']}" 
-        velocity="${joint_limits[name]['velocity']}" />
-      <dynamics damping="1.5" friction="3.5" />
-    </joint>
+      <joint name="${name}" type="revolute">
+          <origin 
+              xyz="${joint_origins[name]['origin_xyz']}" 
+              rpy="${joint_origins[name]['origin_rpy']}" />
+          <parent link="${joint_origins[name]['parent']}" />
+          <child link="${joint_origins[name]['child']}" />
+          <axis xyz="0 0 1" />
+          <limit 
+              lower="${joint_limits[name]['lower']}" 
+              upper="${joint_limits[name]['upper']}" 
+              effort="${joint_limits[name]['effort']}" 
+              velocity="${joint_limits[name]['velocity']}" />
+          <dynamics damping="1.5" friction="3.5" />
+      </joint>
   </xacro:macro>
 
 </robot>

@@ -4,7 +4,6 @@
     <!-- Set use_gazebo = false for implementation on real rover -->
     <xacro:arg name="use_gazebo" default="false"/>
     <xacro:arg name="arm" default="ec66"/>
-    <xacro:arg name="use_moveit" default="false"/>
     
     <!-- Include macros -->
     <xacro:include filename="$(find elite_description)/urdf/macro/elite_macro.xacro" />
@@ -29,11 +28,9 @@
         <origin xyz="0 0 0" rpy="0 0 0" /> 
     </xacro:elite_robot>
 
-    <xacro:unless value="$(arg use_moveit)">
-        <!-- Include ros2_control configuration for simulation -->
-        <xacro:if value="$(arg use_gazebo)">
-            <xacro:include filename="$(find elite_description)/urdf/elite_gazebo_ros2_control.urdf.xacro" />
-        </xacro:if>
-    </xacro:unless>
+    <!-- Include ros2_control configuration for simulation -->
+    <xacro:if value="$(arg use_gazebo)">
+        <xacro:include filename="$(find elite_description)/urdf/elite_gazebo_ros2_control.urdf.xacro" />
+    </xacro:if>
 
 </robot>

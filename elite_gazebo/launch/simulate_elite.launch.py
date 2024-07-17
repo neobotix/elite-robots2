@@ -32,7 +32,7 @@ def launch_setup(context, use_sim_time_arg, use_arm_type_arg):
     spawn_entity = Node(
         package='gazebo_ros', 
         executable='spawn_entity.py',
-        arguments=['-entity', use_arm_type,'-topic', '/robot_description'], 
+        arguments=['-entity', 'elite','-topic', '/robot_description'], 
         output='screen'
         )
 
@@ -64,7 +64,7 @@ def launch_setup(context, use_sim_time_arg, use_arm_type_arg):
     initial_joint_controller_spawner_stopped = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["arm_controller", "-c", "/controller_manager"],
         )
 
     launch_actions.append(spawn_entity)

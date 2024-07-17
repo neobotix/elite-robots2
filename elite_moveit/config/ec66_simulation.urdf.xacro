@@ -1,15 +1,10 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ec66">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="elite">
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
 
-    <xacro:arg name="use_gazebo" value="true"/>
-    <xacro:arg name="arm" value="ec66"/>
-    <!-- Import ec66 urdf file with use_gazebo set to true -->
+    <xacro:arg name="use_gazebo" default="true"/>
+    <xacro:arg name="arm" default="ec66"/>
+
+    <!-- Import ec66 urdf file with use_gazebo set to true and arm argument-->
     <xacro:include filename="$(find elite_description)/urdf/elite_description.urdf.xacro"/>
-
-    <!-- Import control_xacro -->
-    <xacro:include filename="ec66.ros2_control.xacro"/>
-
-    <xacro:ec66_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
-
 </robot>

@@ -4,10 +4,10 @@ controller_manager:
     use_sim_time: true
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-    joint_trajectory_controller:
+    arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-joint_trajectory_controller:
+arm_controller:
   ros__parameters:
     joints:
       - joint1
