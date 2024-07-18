@@ -26,8 +26,10 @@ def launch_setup(context, use_sim_time_arg, use_joint_state_publisher_gui_arg, u
     elite_description_pkg = get_package_share_directory('elite_description')
 
     use_sim_time = use_sim_time_arg.perform(context).lower() == 'true'
-    use_joint_state_publisher_gui = use_joint_state_publisher_gui_arg.perform(context)
     use_arm_type = use_arm_type_arg.perform(context)
+
+    # IfCondition only accepts "True" or "False" 
+    use_joint_state_publisher_gui = str(use_joint_state_publisher_gui_arg.perform(context).lower() == 'true')
 
     robot_description_urdf = os.path.join(elite_description_pkg, 'urdf', 'elite_description.urdf.xacro')
 
