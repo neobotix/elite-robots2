@@ -12,6 +12,7 @@
   <exec_depend>elite_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>transforms3d</exec_depend>
+  <exec_depend>elite_description</exec_depend>
   
 
   <test_depend>ament_copyright</test_depend>
