@@ -1,9 +1,10 @@
 controller_manager:
   ros__parameters:
     update_rate: 100 # Hz
-    use_sim_time: true
+    
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
@@ -34,3 +35,4 @@ arm_controller:
       joint4: { trajectory: 0.2, goal: 0.1 }
       joint5: { trajectory: 0.2, goal: 0.1 }
       joint6: { trajectory: 0.2, goal: 0.1 }
+

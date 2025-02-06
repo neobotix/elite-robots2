@@ -2,9 +2,9 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="elite">
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
 
-    <xacro:arg name="use_gazebo" default="true"/>
-    <xacro:arg name="arm" default="ec66"/>
+    <xacro:arg name="use_gz" default="true"/>
+    <xacro:arg name="arm_type" default="ec66"/>
 
-    <!-- Import ec66 urdf file with use_gazebo set to true and arm argument-->
+    <!-- Import ec66 urdf file with use_gaz set to true and arm argument-->
     <xacro:include filename="$(find elite_description)/urdf/elite_description.urdf.xacro"/>
 </robot>

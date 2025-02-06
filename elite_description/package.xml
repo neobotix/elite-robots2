@@ -9,7 +9,8 @@
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="mzebra@todo.todo">mzebra</maintainer>
-  <maintainer email="padhupradheep@gmail.com">Pradheep</maintainer>
+  <maintainer email="padhupradheep@gmail.com">pradheep</maintainer>
+  <maintainer email="adarshkaran01@gmail.com">adarsh</maintainer>
 
   <license>MIT</license>
   <buildtool_depend>ament_cmake</buildtool_depend>

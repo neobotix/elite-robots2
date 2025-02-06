@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>elite_gazebo</name>
+  <name>elite_gz</name>
   <version>0.1.0</version>
-  <description>The elite_gazebo package for simulation and real implementation of elite manipulator arms</description>
+  <description>The elite_gz package for modern gazebo simulation of elite manipulator arms</description>
   <maintainer email="adarshkaran01@gmail.com">adarsh</maintainer>
   <license>MIT</license>
 
@@ -22,6 +22,11 @@
   <exec_depend>joint_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>xacro</exec_depend>
+
+  <exec_depend>ros_gz</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

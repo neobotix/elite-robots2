@@ -4,6 +4,7 @@ from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
 )
+from pathlib import Path
 from ament_index_python.packages import get_package_share_directory
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -34,10 +35,12 @@ def load_yaml(package_name, file_path):
 def generate_launch_description():
     moveit_config = (
         MoveItConfigsBuilder("elite", package_name="elite_moveit")
-        .robot_description(file_path="config/ec66_simulation.urdf.xacro")
-        .robot_description_semantic(file_path="config/ec66.srdf")
-        .robot_description_kinematics(file_path="config/kinematics.yaml")
+        .robot_description(Path("config") /"ec66_simulation.urdf.xacro")
+        .robot_description_semantic(Path("config") / "ec66.srdf")
+        .robot_description_kinematics(Path("config") / "kinematics.yaml")
         .planning_pipelines(default_planning_pipeline="ompl", pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
+        .trajectory_execution(Path("config") / "moveit_controllers.yaml")
+        .joint_limits(Path("config") / "joint_limits.yaml")
         .to_moveit_configs()
     )
     ld = LaunchDescription()
@@ -61,7 +64,7 @@ def generate_launch_description():
     ld.add_action(DeclareBooleanLaunchArg("monitor_dynamics", default_value=False))
 
     should_publish = LaunchConfiguration("publish_monitored_planning_scene")
-    controllers_yaml = load_yaml("elite_moveit", "config/moveit_controllers.yaml")
+    controllers_yaml = load_yaml("elite_moveit", Path("config") / "moveit_controllers.yaml")
 
     move_group_configuration = {
         "publish_robot_description_semantic": True,
@@ -94,7 +97,7 @@ def generate_launch_description():
         ld,
         package="moveit_ros_move_group",
         executable="move_group",
-        commands_file=str(moveit_config.package_path / "launch" / "gdb_settings.gdb"),
+        # commands_file=str(moveit_config.package_path / "launch" / "gdb_settings.gdb"),
         output="screen",
         parameters=move_group_params,
         extra_debug_args=["--debug"],
@@ -113,8 +116,11 @@ def generate_launch_description():
     )
 
     rviz_parameters = [
-        moveit_config.planning_pipelines,
+        moveit_config.robot_description,
+        moveit_config.robot_description_semantic,
         moveit_config.robot_description_kinematics,
+        moveit_config.planning_pipelines,
+        moveit_config.joint_limits,
         {"use_sim_time": use_sim_time}
     ]
 
@@ -127,9 +133,7 @@ def generate_launch_description():
         arguments=["-d", LaunchConfiguration("rviz_config")],
         parameters=rviz_parameters,
     )
-    # ld.add_action(rviz_node)
 
     return ld
 
-    # moveit_config = MoveItConfigsBuilder("ec66", package_name="elite_moveit").to_moveit_configs()
-    # return generate_move_group_launch(moveit_config)
+

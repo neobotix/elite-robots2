@@ -1,0 +1,35 @@
+joint_parents:
+  joint1: base_link
+  joint2: link1
+  joint3: link2
+  joint4: link3
+  joint5: link4
+  joint6: link5
+
+joint_children:
+  joint1: link1
+  joint2: link2
+  joint3: link3
+  joint4: link4
+  joint5: link5
+  joint6: link6
+
+joint_origins:
+  joint1:
+    origin_xyz: "0 0 0.096"
+    origin_rpy: "0 0 3.1416"
+  joint2:
+    origin_xyz: "0 0 0"
+    origin_rpy: "1.5708 -1.5708 0"
+  joint3:
+    origin_xyz: "0 0.418 0"
+    origin_rpy: "0 0 1.5708"
+  joint4:
+    origin_xyz: "0.398 0 0.122"
+    origin_rpy: "0 0 0"
+  joint5:
+    origin_xyz: "0 0.098 0"
+    origin_rpy: "1.5708 0 -3.1416"
+  joint6:
+    origin_xyz: "0 -0.089 0"
+    origin_rpy: "-1.5708 0 3.1416"

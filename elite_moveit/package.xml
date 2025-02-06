@@ -7,7 +7,7 @@
      An automatically generated package with all the configuration and launch files for using the ec66 with the MoveIt Motion Planning Framework
   </description>
   <maintainer email="padmanabhan@neobotix.de">padmanabhan</maintainer>
-
+  <maintainer email="adarshkaran01@gmail.com">adarsh</maintainer>
   <license>BSD</license>
 
   <url type="website">http://moveit.ros.org/</url>
@@ -18,10 +18,15 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>moveit_ros_move_group</exec_depend>
   <exec_depend>moveit_kinematics</exec_depend>
   <exec_depend>moveit_planners</exec_depend>
   <exec_depend>moveit_simple_controller_manager</exec_depend>
+  <exec_depend>moveit_configs_utils</exec_depend>
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>moveit_ros_visualization</exec_depend>
+  <exec_depend>moveit_ros_warehouse</exec_depend>
+  <exec_depend>moveit_setup_assistant</exec_depend>
+
   <exec_depend>joint_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
@@ -32,11 +37,7 @@
   <!-- <exec_depend>gazebo_ros_control</exec_depend> -->
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>elite_description</exec_depend>
-  <exec_depend>moveit_configs_utils</exec_depend>
-  <exec_depend>moveit_ros_move_group</exec_depend>
-  <exec_depend>moveit_ros_visualization</exec_depend>
-  <exec_depend>moveit_ros_warehouse</exec_depend>
-  <exec_depend>moveit_setup_assistant</exec_depend>
+
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>rviz_common</exec_depend>
