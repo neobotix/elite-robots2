@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="elite">
+
+  <xacro:include filename="$(find elite_description)/urdf/xacros/elite_ros2_control_macro.xacro" />
+
+  <xacro:arg name="simulation_controllers" default="$(find elite_gz)/config/$(arg arm_type)/elite_controllers.yaml"/>
+
+  <gazebo reference="$(arg arm_parent)">
+  </gazebo>
+  <gazebo>
+    <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system">
+      <parameters>$(arg simulation_controllers)</parameters>
+    </plugin>
+  </gazebo>
+
+  <!-- Use the Elite_ros2_control macro -->
+  <xacro:elite_ros2_control 
+    name="GazeboSimSystem"
+    tf_prefix="$(arg tf_prefix)" 
+    plugin="gz_ros2_control/GazeboSimSystem"
+    parameters="$(arg simulation_controllers)"
+    initial_positions="${elite_initial_positions}"
+    />
+
+</robot>
+

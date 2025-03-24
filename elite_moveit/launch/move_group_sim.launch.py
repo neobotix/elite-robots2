@@ -1,139 +1,127 @@
-from moveit_configs_utils import MoveItConfigsBuilder
-from moveit_configs_utils.launches import generate_move_group_launch
-from launch.actions import (
-    DeclareLaunchArgument,
-    IncludeLaunchDescription,
-)
-from pathlib import Path
-from ament_index_python.packages import get_package_share_directory
-from launch.conditions import IfCondition
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+# Author: Pradheep Padmanabhan
+# Contributor: Adarsh Karan K P
+
 import os
-import yaml
-from launch_ros.actions import Node
-from launch_ros.parameter_descriptions import ParameterValue
-
-from srdfdom.srdf import SRDF
-
-from moveit_configs_utils.launch_utils import (
-    add_debuggable_node,
-    DeclareBooleanLaunchArg,
-)
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, RegisterEventHandler
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
+from launch_ros.descriptions import ParameterFile
+from moveit_configs_utils import MoveItConfigsBuilder
+from pathlib import Path
+    
+def launch_setup(context, *args, **kwargs):
 
-def load_yaml(package_name, file_path):
-    package_path = get_package_share_directory(package_name)
-    absolute_file_path = os.path.join(package_path, file_path)
+    # Initialize Arguments
+    arm_type = LaunchConfiguration("arm_type")
+    use_gz = LaunchConfiguration("use_gz")
+    moveit_config_package = LaunchConfiguration("moveit_config_package")
+    use_sim_time = LaunchConfiguration("use_sim_time")
+    launch_rviz = LaunchConfiguration("launch_rviz")
 
-    try:
-        with open(absolute_file_path, "r") as file:
-            return yaml.safe_load(file)
-    except EnvironmentError:
-        return None
+    urdf = os.path.join(get_package_share_directory('elite_moveit'),
+        'config',
+        'ec66_simulation.urdf.xacro')
 
-def generate_launch_description():
+    # MoveIt Configuration
+    srdf = os.path.join(get_package_share_directory('elite_moveit'),
+        'config',
+        'ec66.srdf')
+    
     moveit_config = (
         MoveItConfigsBuilder("elite", package_name="elite_moveit")
-        .robot_description(Path("config") /"ec66_simulation.urdf.xacro")
-        .robot_description_semantic(Path("config") / "ec66.srdf")
-        .robot_description_kinematics(Path("config") / "kinematics.yaml")
-        .planning_pipelines(default_planning_pipeline="ompl", pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
-        .trajectory_execution(Path("config") / "moveit_controllers.yaml")
-        .joint_limits(Path("config") / "joint_limits.yaml")
+        .robot_description_semantic(file_path=srdf)
+        .robot_description(file_path=urdf, mappings={"arm_type": arm_type, "use_gz": use_gz})
         .to_moveit_configs()
     )
-    ld = LaunchDescription()
 
-    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
-
-    ld.add_action(DeclareBooleanLaunchArg("debug", default_value=False))
-    ld.add_action(
-        DeclareBooleanLaunchArg("allow_trajectory_execution", default_value=True)
-    )
-    ld.add_action(
-        DeclareBooleanLaunchArg("publish_monitored_planning_scene", default_value=True)
-    )
-    # load non-default MoveGroup capabilities (space separated)
-    ld.add_action(DeclareLaunchArgument("capabilities", default_value=""))
-    # inhibit these default MoveGroup capabilities (space separated)
-    ld.add_action(DeclareLaunchArgument("disable_capabilities", default_value=""))
-
-    # do not copy dynamics information from /joint_states to internal robot monitoring
-    # default to false, because almost nothing in move_group relies on this information
-    ld.add_action(DeclareBooleanLaunchArg("monitor_dynamics", default_value=False))
-
-    should_publish = LaunchConfiguration("publish_monitored_planning_scene")
-    controllers_yaml = load_yaml("elite_moveit", Path("config") / "moveit_controllers.yaml")
-
-    move_group_configuration = {
-        "publish_robot_description_semantic": True,
-        "publish_robot_description": True,
-        "allow_trajectory_execution": LaunchConfiguration("allow_trajectory_execution"),
-        # Note: Wrapping the following values is necessary so that the parameter value can be the empty string
-        "capabilities": ParameterValue(
-            LaunchConfiguration("capabilities"), value_type=str
-        ),
-        "disable_capabilities": ParameterValue(
-            LaunchConfiguration("disable_capabilities"), value_type=str
-        ),
-        # Publish the planning scene of the physical robot so that rviz plugin can know actual robot
-        "publish_planning_scene": should_publish,
-        "publish_geometry_updates": should_publish,
-        "publish_state_updates": should_publish,
-        "publish_transforms_updates": should_publish,
-        "monitor_dynamics": False,
-        "use_sim_time": use_sim_time,
-        "moveit_simple_controller_manager": controllers_yaml,
-        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
-    }
-
-    move_group_params = [
-        moveit_config.to_dict(),
-        move_group_configuration,
-    ]
-
-    add_debuggable_node(
-        ld,
+    # Start the actual move_group node/action server
+    move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
-        # commands_file=str(moveit_config.package_path / "launch" / "gdb_settings.gdb"),
         output="screen",
-        parameters=move_group_params,
-        extra_debug_args=["--debug"],
-        # Set the display variable, in case OpenGL code is used internally
-        additional_env={"DISPLAY": ":0"},
+        parameters=[
+            moveit_config.to_dict(),
+            {"use_sim_time": use_sim_time},
+        ],
     )
 
-    moveit_path = get_package_share_directory("elite_moveit")
+    # rviz with moveit configuration
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare(moveit_config_package), "config", "moveit.rviz"]
+    )
+    rviz_node = Node(
+        package="rviz2",
+        condition=IfCondition(launch_rviz),
+        executable="rviz2",
+        name="rviz2_moveit",
+        output="log",
+        arguments=["-d", rviz_config_file],
+        parameters=[
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+            moveit_config.planning_pipelines,
+            moveit_config.joint_limits,
+            {
+                "use_sim_time": use_sim_time,
+            },
+        ],
+    )
 
-    # overriding the default launch for moveit rviz, so that we can toggle use_sim_time
-    ld.add_action(
+    nodes_to_start = [move_group_node, rviz_node]
+
+    return nodes_to_start
+
+def generate_launch_description():
+
+    declared_arguments = []
+
+    declared_arguments.append(
         DeclareLaunchArgument(
-            "rviz_config",
-            default_value=str(moveit_path + "/config/moveit.rviz"),
+            'arm_type', 
+            default_value='ec66',
+            choices=['ec66'],
+            description='Arm Types:\n'
         )
     )
 
-    rviz_parameters = [
-        moveit_config.robot_description,
-        moveit_config.robot_description_semantic,
-        moveit_config.robot_description_kinematics,
-        moveit_config.planning_pipelines,
-        moveit_config.joint_limits,
-        {"use_sim_time": use_sim_time}
-    ]
-
-    add_debuggable_node(
-        ld,
-        package="rviz2",
-        executable="rviz2",
-        output="log",
-        respawn=False,
-        arguments=["-d", LaunchConfiguration("rviz_config")],
-        parameters=rviz_parameters,
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "moveit_config_package",
+            default_value="elite_moveit",
+            description='MoveIt config package with robot SRDF/XACRO files. Usually the argument\n'
+            '\t is not set, it enables use of a custom moveit config.',
+        )
     )
 
-    return ld
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="true",
+            description='Make MoveIt to use simulation time.\n'
+              '\t This is needed for the trajectory planing in simulation.',
+        )
+    )
 
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_gz",
+            default_value="true",
+            description="Whether to enable Gazebo simulation.",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "launch_rviz", 
+            default_value="true", 
+            description="Launch RViz?"
+        )
+    )
+
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
 
