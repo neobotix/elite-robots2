@@ -4,174 +4,173 @@
 -->
 <robot xmlns:xacro="http://wiki.ros.org/xacro" name="elite">
 
-	<!-- This macro sets the lower, upper, effort, and velocity limits for a given joint -->
-	<xacro:macro name="define_joint_limits" params="jn">
+  <!-- This macro sets the lower, upper, effort, and velocity limits for a given joint -->
+  <xacro:macro name="define_joint_limits" params="jn">
 
-		<xacro:property name="${jn}_lower" value="${joint_limits['joint_limits'][jn]['lower']}" scope="global"/>
-		<xacro:property name="${jn}_upper" value="${joint_limits['joint_limits'][jn]['upper']}" scope="global"/>
-		<xacro:property name="${jn}_effort" value="${joint_limits['joint_limits'][jn]['effort']}" scope="global"/>
-		<xacro:property name="${jn}_velocity" value="${joint_limits['joint_limits'][jn]['velocity']}" scope="global"/>
+  <xacro:property name="${jn}_lower" value="${joint_limits['joint_limits'][jn]['lower']}" scope="global"/>
+  <xacro:property name="${jn}_upper" value="${joint_limits['joint_limits'][jn]['upper']}" scope="global"/>
+  <xacro:property name="${jn}_effort" value="${joint_limits['joint_limits'][jn]['effort']}" scope="global"/>
+  <xacro:property name="${jn}_velocity" value="${joint_limits['joint_limits'][jn]['velocity']}" scope="global"/>
 
-	</xacro:macro>
+  </xacro:macro>
 
-	<!-- This macro loads joint limits, kinematics, and physical parameters -->
-	<xacro:macro name="read_model_data" params="
-		joint_limits_parameters_file
-		kinematics_parameters_file
-		physical_parameters_file
-		">
+  <!-- This macro loads joint limits, kinematics, and physical parameters -->
+  <xacro:macro name="read_model_data" params="
+    joint_limits_parameters_file
+    kinematics_parameters_file
+    physical_parameters_file
+    ">
 
-		<!-- Load YAML files -->
-		<xacro:property name="joint_limits" value="${xacro.load_yaml(joint_limits_parameters_file)}"/>
-		<xacro:property name="kinematics" value="${xacro.load_yaml(kinematics_parameters_file)}"/>
-		<xacro:property name="physical" value="${xacro.load_yaml(physical_parameters_file)}"/>
-		<xacro:property name="joint_dynamics" value="${physical.get('joint_dynamics', dict())}" scope="parent"/>
+  <!-- Load YAML files -->
+  <xacro:property name="joint_limits" value="${xacro.load_yaml(joint_limits_parameters_file)}"/>
+  <xacro:property name="kinematics" value="${xacro.load_yaml(kinematics_parameters_file)}"/>
+  <xacro:property name="physical" value="${xacro.load_yaml(physical_parameters_file)}"/>
+  <xacro:property name="joint_dynamics" value="${physical.get('joint_dynamics', dict())}" scope="parent"/>
 
-		<!-- Joint Limits -->
-		<xacro:define_joint_limits jn="joint1"/>
-		<xacro:define_joint_limits jn="joint2"/>
-		<xacro:define_joint_limits jn="joint3"/>
-		<xacro:define_joint_limits jn="joint4"/>
-		<xacro:define_joint_limits jn="joint5"/>
-		<xacro:define_joint_limits jn="joint6"/>
+  <!-- Joint Limits -->
+  <xacro:define_joint_limits jn="joint1"/>
+  <xacro:define_joint_limits jn="joint2"/>
+  <xacro:define_joint_limits jn="joint3"/>
+  <xacro:define_joint_limits jn="joint4"/>
+  <xacro:define_joint_limits jn="joint5"/>
+  <xacro:define_joint_limits jn="joint6"/>
 
-		<!-- Kinematics -->
-		<xacro:property name="joint_parents_joint1" value="${kinematics['joint_parents']['joint1']}" scope="parent"/>
-		<xacro:property name="joint_children_joint1" value="${kinematics['joint_children']['joint1']}" scope="parent"/>
-		<xacro:property name="joint1_xyz" value="${kinematics['joint_origins']['joint1']['origin_xyz']}" scope="parent"/>
-		<xacro:property name="joint1_rpy" value="${kinematics['joint_origins']['joint1']['origin_rpy']}" scope="parent"/>
+  <!-- Kinematics -->
+  <xacro:property name="joint_parents_joint1" value="${kinematics['joint_parents']['joint1']}" scope="parent"/>
+  <xacro:property name="joint_children_joint1" value="${kinematics['joint_children']['joint1']}" scope="parent"/>
+  <xacro:property name="joint1_xyz" value="${kinematics['joint_origins']['joint1']['origin_xyz']}" scope="parent"/>
+  <xacro:property name="joint1_rpy" value="${kinematics['joint_origins']['joint1']['origin_rpy']}" scope="parent"/>
 
-		<xacro:property name="joint_parents_joint2" value="${kinematics['joint_parents']['joint2']}" scope="parent"/>
-		<xacro:property name="joint_children_joint2" value="${kinematics['joint_children']['joint2']}" scope="parent"/>
-		<xacro:property name="joint2_xyz" value="${kinematics['joint_origins']['joint2']['origin_xyz']}" scope="parent"/>
-		<xacro:property name="joint2_rpy" value="${kinematics['joint_origins']['joint2']['origin_rpy']}" scope="parent"/>
+  <xacro:property name="joint_parents_joint2" value="${kinematics['joint_parents']['joint2']}" scope="parent"/>
+  <xacro:property name="joint_children_joint2" value="${kinematics['joint_children']['joint2']}" scope="parent"/>
+  <xacro:property name="joint2_xyz" value="${kinematics['joint_origins']['joint2']['origin_xyz']}" scope="parent"/>
+  <xacro:property name="joint2_rpy" value="${kinematics['joint_origins']['joint2']['origin_rpy']}" scope="parent"/>
 
-		<xacro:property name="joint_parents_joint3" value="${kinematics['joint_parents']['joint3']}" scope="parent"/>
-		<xacro:property name="joint_children_joint3" value="${kinematics['joint_children']['joint3']}" scope="parent"/>
-		<xacro:property name="joint3_xyz" value="${kinematics['joint_origins']['joint3']['origin_xyz']}" scope="parent"/>
-		<xacro:property name="joint3_rpy" value="${kinematics['joint_origins']['joint3']['origin_rpy']}" scope="parent"/>
+  <xacro:property name="joint_parents_joint3" value="${kinematics['joint_parents']['joint3']}" scope="parent"/>
+  <xacro:property name="joint_children_joint3" value="${kinematics['joint_children']['joint3']}" scope="parent"/>
+  <xacro:property name="joint3_xyz" value="${kinematics['joint_origins']['joint3']['origin_xyz']}" scope="parent"/>
+  <xacro:property name="joint3_rpy" value="${kinematics['joint_origins']['joint3']['origin_rpy']}" scope="parent"/>
 
-		<xacro:property name="joint_parents_joint4" value="${kinematics['joint_parents']['joint4']}" scope="parent"/>
-		<xacro:property name="joint_children_joint4" value="${kinematics['joint_children']['joint4']}" scope="parent"/>
-		<xacro:property name="joint4_xyz" value="${kinematics['joint_origins']['joint4']['origin_xyz']}" scope="parent"/>
-		<xacro:property name="joint4_rpy" value="${kinematics['joint_origins']['joint4']['origin_rpy']}" scope="parent"/>
+  <xacro:property name="joint_parents_joint4" value="${kinematics['joint_parents']['joint4']}" scope="parent"/>
+  <xacro:property name="joint_children_joint4" value="${kinematics['joint_children']['joint4']}" scope="parent"/>
+  <xacro:property name="joint4_xyz" value="${kinematics['joint_origins']['joint4']['origin_xyz']}" scope="parent"/>
+  <xacro:property name="joint4_rpy" value="${kinematics['joint_origins']['joint4']['origin_rpy']}" scope="parent"/>
 
-		<xacro:property name="joint_parents_joint5" value="${kinematics['joint_parents']['joint5']}" scope="parent"/>
-		<xacro:property name="joint_children_joint5" value="${kinematics['joint_children']['joint5']}" scope="parent"/>
-		<xacro:property name="joint5_xyz" value="${kinematics['joint_origins']['joint5']['origin_xyz']}" scope="parent"/>
-		<xacro:property name="joint5_rpy" value="${kinematics['joint_origins']['joint5']['origin_rpy']}" scope="parent"/>
+  <xacro:property name="joint_parents_joint5" value="${kinematics['joint_parents']['joint5']}" scope="parent"/>
+  <xacro:property name="joint_children_joint5" value="${kinematics['joint_children']['joint5']}" scope="parent"/>
+  <xacro:property name="joint5_xyz" value="${kinematics['joint_origins']['joint5']['origin_xyz']}" scope="parent"/>
+  <xacro:property name="joint5_rpy" value="${kinematics['joint_origins']['joint5']['origin_rpy']}" scope="parent"/>
 
-		<xacro:property name="joint_parents_joint6" value="${kinematics['joint_parents']['joint6']}" scope="parent"/>
-		<xacro:property name="joint_children_joint6" value="${kinematics['joint_children']['joint6']}" scope="parent"/>
-		<xacro:property name="joint6_xyz" value="${kinematics['joint_origins']['joint6']['origin_xyz']}" scope="parent"/>
-		<xacro:property name="joint6_rpy" value="${kinematics['joint_origins']['joint6']['origin_rpy']}" scope="parent"/>
+  <xacro:property name="joint_parents_joint6" value="${kinematics['joint_parents']['joint6']}" scope="parent"/>
+  <xacro:property name="joint_children_joint6" value="${kinematics['joint_children']['joint6']}" scope="parent"/>
+  <xacro:property name="joint6_xyz" value="${kinematics['joint_origins']['joint6']['origin_xyz']}" scope="parent"/>
+  <xacro:property name="joint6_rpy" value="${kinematics['joint_origins']['joint6']['origin_rpy']}" scope="parent"/>
 
-		<!-- Physical Parameters -->
-		<xacro:property name="links" value="${['base_link', 'link1', 'link2', 'link3', 'link4', 'link5', 'link6']}"/>
-		<!-- properties for each link -->
-		<xacro:property name="base_link_mass" value="${physical['link_inertials']['base_link']['mass']}" scope="parent"/>
-		<xacro:property name="base_link_origin" value="${physical['link_inertials']['base_link']['origin']['x']} 
-																			${physical['link_inertials']['base_link']['origin']['y']} 
-																			${physical['link_inertials']['base_link']['origin']['z']}" scope="parent"/>
-		<xacro:property name="base_link_ixx" value="${physical['link_inertials']['base_link']['inertia']['ixx']}" scope="parent"/>
-		<xacro:property name="base_link_ixy" value="${physical['link_inertials']['base_link']['inertia']['ixy']}" scope="parent"/>
-		<xacro:property name="base_link_ixz" value="${physical['link_inertials']['base_link']['inertia']['ixz']}" scope="parent"/>
-		<xacro:property name="base_link_iyy" value="${physical['link_inertials']['base_link']['inertia']['iyy']}" scope="parent"/>
-		<xacro:property name="base_link_iyz" value="${physical['link_inertials']['base_link']['inertia']['iyz']}" scope="parent"/>
-		<xacro:property name="base_link_izz" value="${physical['link_inertials']['base_link']['inertia']['izz']}" scope="parent"/>
+  <!-- Physical Parameters -->
+  <xacro:property name="links" value="${['base_link', 'link1', 'link2', 'link3', 'link4', 'link5', 'link6']}"/>
+  <!-- properties for each link -->
+  <xacro:property name="base_link_mass" value="${physical['link_inertials']['base_link']['mass']}" scope="parent"/>
+  <xacro:property name="base_link_origin" value="${physical['link_inertials']['base_link']['origin']['x']} 
+                                  ${physical['link_inertials']['base_link']['origin']['y']} 
+                                  ${physical['link_inertials']['base_link']['origin']['z']}" scope="parent"/>
+  <xacro:property name="base_link_ixx" value="${physical['link_inertials']['base_link']['inertia']['ixx']}" scope="parent"/>
+  <xacro:property name="base_link_ixy" value="${physical['link_inertials']['base_link']['inertia']['ixy']}" scope="parent"/>
+  <xacro:property name="base_link_ixz" value="${physical['link_inertials']['base_link']['inertia']['ixz']}" scope="parent"/>
+  <xacro:property name="base_link_iyy" value="${physical['link_inertials']['base_link']['inertia']['iyy']}" scope="parent"/>
+  <xacro:property name="base_link_iyz" value="${physical['link_inertials']['base_link']['inertia']['iyz']}" scope="parent"/>
+  <xacro:property name="base_link_izz" value="${physical['link_inertials']['base_link']['inertia']['izz']}" scope="parent"/>
 
-		<!-- link1 -->
-		<xacro:property name="link1_mass" value="${physical['link_inertials']['link1']['mass']}" scope="parent"/>
-		<xacro:property name="link1_origin" value="${physical['link_inertials']['link1']['origin']['x']} 
-																			${physical['link_inertials']['link1']['origin']['y']} 
-																			${physical['link_inertials']['link1']['origin']['z']}" scope="parent"/>
-		<xacro:property name="link1_ixx" value="${physical['link_inertials']['link1']['inertia']['ixx']}" scope="parent"/>
-		<xacro:property name="link1_ixy" value="${physical['link_inertials']['link1']['inertia']['ixy']}" scope="parent"/>
-		<xacro:property name="link1_ixz" value="${physical['link_inertials']['link1']['inertia']['ixz']}" scope="parent"/>
-		<xacro:property name="link1_iyy" value="${physical['link_inertials']['link1']['inertia']['iyy']}" scope="parent"/>
-		<xacro:property name="link1_iyz" value="${physical['link_inertials']['link1']['inertia']['iyz']}" scope="parent"/>
-		<xacro:property name="link1_izz" value="${physical['link_inertials']['link1']['inertia']['izz']}" scope="parent"/>
+  <!-- link1 -->
+  <xacro:property name="link1_mass" value="${physical['link_inertials']['link1']['mass']}" scope="parent"/>
+  <xacro:property name="link1_origin" value="${physical['link_inertials']['link1']['origin']['x']} 
+                                  ${physical['link_inertials']['link1']['origin']['y']} 
+                                  ${physical['link_inertials']['link1']['origin']['z']}" scope="parent"/>
+  <xacro:property name="link1_ixx" value="${physical['link_inertials']['link1']['inertia']['ixx']}" scope="parent"/>
+  <xacro:property name="link1_ixy" value="${physical['link_inertials']['link1']['inertia']['ixy']}" scope="parent"/>
+  <xacro:property name="link1_ixz" value="${physical['link_inertials']['link1']['inertia']['ixz']}" scope="parent"/>
+  <xacro:property name="link1_iyy" value="${physical['link_inertials']['link1']['inertia']['iyy']}" scope="parent"/>
+  <xacro:property name="link1_iyz" value="${physical['link_inertials']['link1']['inertia']['iyz']}" scope="parent"/>
+  <xacro:property name="link1_izz" value="${physical['link_inertials']['link1']['inertia']['izz']}" scope="parent"/>
 
-		<!-- link2 -->
-		<xacro:property name="link2_mass" value="${physical['link_inertials']['link2']['mass']}" scope="parent"/>
-		<xacro:property name="link2_origin" value="${physical['link_inertials']['link2']['origin']['x']} 
-																			${physical['link_inertials']['link2']['origin']['y']} 
-																			${physical['link_inertials']['link2']['origin']['z']}" scope="parent"/>
-		<xacro:property name="link2_ixx" value="${physical['link_inertials']['link2']['inertia']['ixx']}" scope="parent"/>
-		<xacro:property name="link2_ixy" value="${physical['link_inertials']['link2']['inertia']['ixy']}" scope="parent"/>
-		<xacro:property name="link2_ixz" value="${physical['link_inertials']['link2']['inertia']['ixz']}" scope="parent"/>
-		<xacro:property name="link2_iyy" value="${physical['link_inertials']['link2']['inertia']['iyy']}" scope="parent"/>
-		<xacro:property name="link2_iyz" value="${physical['link_inertials']['link2']['inertia']['iyz']}" scope="parent"/>
-		<xacro:property name="link2_izz" value="${physical['link_inertials']['link2']['inertia']['izz']}" scope="parent"/>
+  <!-- link2 -->
+  <xacro:property name="link2_mass" value="${physical['link_inertials']['link2']['mass']}" scope="parent"/>
+  <xacro:property name="link2_origin" value="${physical['link_inertials']['link2']['origin']['x']} 
+                                  ${physical['link_inertials']['link2']['origin']['y']} 
+                                  ${physical['link_inertials']['link2']['origin']['z']}" scope="parent"/>
+  <xacro:property name="link2_ixx" value="${physical['link_inertials']['link2']['inertia']['ixx']}" scope="parent"/>
+  <xacro:property name="link2_ixy" value="${physical['link_inertials']['link2']['inertia']['ixy']}" scope="parent"/>
+  <xacro:property name="link2_ixz" value="${physical['link_inertials']['link2']['inertia']['ixz']}" scope="parent"/>
+  <xacro:property name="link2_iyy" value="${physical['link_inertials']['link2']['inertia']['iyy']}" scope="parent"/>
+  <xacro:property name="link2_iyz" value="${physical['link_inertials']['link2']['inertia']['iyz']}" scope="parent"/>
+  <xacro:property name="link2_izz" value="${physical['link_inertials']['link2']['inertia']['izz']}" scope="parent"/>
 
-		<!-- link3 -->
-		<xacro:property name="link3_mass" value="${physical['link_inertials']['link3']['mass']}" scope="parent"/>
-		<xacro:property name="link3_origin" value="${physical['link_inertials']['link3']['origin']['x']} 
-																			${physical['link_inertials']['link3']['origin']['y']} 
-																			${physical['link_inertials']['link3']['origin']['z']}" scope="parent"/>
-		<xacro:property name="link3_ixx" value="${physical['link_inertials']['link3']['inertia']['ixx']}" scope="parent"/>
-		<xacro:property name="link3_ixy" value="${physical['link_inertials']['link3']['inertia']['ixy']}" scope="parent"/>
-		<xacro:property name="link3_ixz" value="${physical['link_inertials']['link3']['inertia']['ixz']}" scope="parent"/>
-		<xacro:property name="link3_iyy" value="${physical['link_inertials']['link3']['inertia']['iyy']}" scope="parent"/>
-		<xacro:property name="link3_iyz" value="${physical['link_inertials']['link3']['inertia']['iyz']}" scope="parent"/>
-		<xacro:property name="link3_izz" value="${physical['link_inertials']['link3']['inertia']['izz']}" scope="parent"/>
+  <!-- link3 -->
+  <xacro:property name="link3_mass" value="${physical['link_inertials']['link3']['mass']}" scope="parent"/>
+  <xacro:property name="link3_origin" value="${physical['link_inertials']['link3']['origin']['x']} 
+                                  ${physical['link_inertials']['link3']['origin']['y']} 
+                                  ${physical['link_inertials']['link3']['origin']['z']}" scope="parent"/>
+  <xacro:property name="link3_ixx" value="${physical['link_inertials']['link3']['inertia']['ixx']}" scope="parent"/>
+  <xacro:property name="link3_ixy" value="${physical['link_inertials']['link3']['inertia']['ixy']}" scope="parent"/>
+  <xacro:property name="link3_ixz" value="${physical['link_inertials']['link3']['inertia']['ixz']}" scope="parent"/>
+  <xacro:property name="link3_iyy" value="${physical['link_inertials']['link3']['inertia']['iyy']}" scope="parent"/>
+  <xacro:property name="link3_iyz" value="${physical['link_inertials']['link3']['inertia']['iyz']}" scope="parent"/>
+  <xacro:property name="link3_izz" value="${physical['link_inertials']['link3']['inertia']['izz']}" scope="parent"/>
 
-		<!-- link4 -->
-		<xacro:property name="link4_mass" value="${physical['link_inertials']['link4']['mass']}" scope="parent"/>
-		<xacro:property name="link4_origin" value="${physical['link_inertials']['link4']['origin']['x']} 
-																			${physical['link_inertials']['link4']['origin']['y']} 
-																			${physical['link_inertials']['link4']['origin']['z']}" scope="parent"/>
-		<xacro:property name="link4_ixx" value="${physical['link_inertials']['link4']['inertia']['ixx']}" scope="parent"/>
-		<xacro:property name="link4_ixy" value="${physical['link_inertials']['link4']['inertia']['ixy']}" scope="parent"/>
-		<xacro:property name="link4_ixz" value="${physical['link_inertials']['link4']['inertia']['ixz']}" scope="parent"/>
-		<xacro:property name="link4_iyy" value="${physical['link_inertials']['link4']['inertia']['iyy']}" scope="parent"/>
-		<xacro:property name="link4_iyz" value="${physical['link_inertials']['link4']['inertia']['iyz']}" scope="parent"/>
-		<xacro:property name="link4_izz" value="${physical['link_inertials']['link4']['inertia']['izz']}" scope="parent"/>
+  <!-- link4 -->
+  <xacro:property name="link4_mass" value="${physical['link_inertials']['link4']['mass']}" scope="parent"/>
+  <xacro:property name="link4_origin" value="${physical['link_inertials']['link4']['origin']['x']} 
+                                  ${physical['link_inertials']['link4']['origin']['y']} 
+                                  ${physical['link_inertials']['link4']['origin']['z']}" scope="parent"/>
+  <xacro:property name="link4_ixx" value="${physical['link_inertials']['link4']['inertia']['ixx']}" scope="parent"/>
+  <xacro:property name="link4_ixy" value="${physical['link_inertials']['link4']['inertia']['ixy']}" scope="parent"/>
+  <xacro:property name="link4_ixz" value="${physical['link_inertials']['link4']['inertia']['ixz']}" scope="parent"/>
+  <xacro:property name="link4_iyy" value="${physical['link_inertials']['link4']['inertia']['iyy']}" scope="parent"/>
+  <xacro:property name="link4_iyz" value="${physical['link_inertials']['link4']['inertia']['iyz']}" scope="parent"/>
+  <xacro:property name="link4_izz" value="${physical['link_inertials']['link4']['inertia']['izz']}" scope="parent"/>
 
-		<!-- link5 -->
-		<xacro:property name="link5_mass" value="${physical['link_inertials']['link5']['mass']}" scope="parent"/>
-		<xacro:property name="link5_origin" value="${physical['link_inertials']['link5']['origin']['x']} 
-																			${physical['link_inertials']['link5']['origin']['y']} 
-																			${physical['link_inertials']['link5']['origin']['z']}" scope="parent"/>
-		<xacro:property name="link5_ixx" value="${physical['link_inertials']['link5']['inertia']['ixx']}" scope="parent"/>
-		<xacro:property name="link5_ixy" value="${physical['link_inertials']['link5']['inertia']['ixy']}" scope="parent"/>
-		<xacro:property name="link5_ixz" value="${physical['link_inertials']['link5']['inertia']['ixz']}" scope="parent"/>
-		<xacro:property name="link5_iyy" value="${physical['link_inertials']['link5']['inertia']['iyy']}" scope="parent"/>
-		<xacro:property name="link5_iyz" value="${physical['link_inertials']['link5']['inertia']['iyz']}" scope="parent"/>
-		<xacro:property name="link5_izz" value="${physical['link_inertials']['link5']['inertia']['izz']}" scope="parent"/>
+  <!-- link5 -->
+  <xacro:property name="link5_mass" value="${physical['link_inertials']['link5']['mass']}" scope="parent"/>
+  <xacro:property name="link5_origin" value="${physical['link_inertials']['link5']['origin']['x']} 
+                                  ${physical['link_inertials']['link5']['origin']['y']} 
+                                  ${physical['link_inertials']['link5']['origin']['z']}" scope="parent"/>
+  <xacro:property name="link5_ixx" value="${physical['link_inertials']['link5']['inertia']['ixx']}" scope="parent"/>
+  <xacro:property name="link5_ixy" value="${physical['link_inertials']['link5']['inertia']['ixy']}" scope="parent"/>
+  <xacro:property name="link5_ixz" value="${physical['link_inertials']['link5']['inertia']['ixz']}" scope="parent"/>
+  <xacro:property name="link5_iyy" value="${physical['link_inertials']['link5']['inertia']['iyy']}" scope="parent"/>
+  <xacro:property name="link5_iyz" value="${physical['link_inertials']['link5']['inertia']['iyz']}" scope="parent"/>
+  <xacro:property name="link5_izz" value="${physical['link_inertials']['link5']['inertia']['izz']}" scope="parent"/>
 
-		<!-- link6 -->
-		<xacro:property name="link6_mass" value="${physical['link_inertials']['link6']['mass']}" scope="parent"/>
-		<xacro:property name="link6_origin" value="${physical['link_inertials']['link6']['origin']['x']} 
-																			${physical['link_inertials']['link6']['origin']['y']} 
-																			${physical['link_inertials']['link6']['origin']['z']}" scope="parent"/>
-		<xacro:property name="link6_ixx" value="${physical['link_inertials']['link6']['inertia']['ixx']}" scope="parent"/>
-		<xacro:property name="link6_ixy" value="${physical['link_inertials']['link6']['inertia']['ixy']}" scope="parent"/>
-		<xacro:property name="link6_ixz" value="${physical['link_inertials']['link6']['inertia']['ixz']}" scope="parent"/>
-		<xacro:property name="link6_iyy" value="${physical['link_inertials']['link6']['inertia']['iyy']}" scope="parent"/>
-		<xacro:property name="link6_iyz" value="${physical['link_inertials']['link6']['inertia']['iyz']}" scope="parent"/>
-		<xacro:property name="link6_izz" value="${physical['link_inertials']['link6']['inertia']['izz']}" scope="parent"/>
+  <!-- link6 -->
+  <xacro:property name="link6_mass" value="${physical['link_inertials']['link6']['mass']}" scope="parent"/>
+  <xacro:property name="link6_origin" value="${physical['link_inertials']['link6']['origin']['x']} 
+                                  ${physical['link_inertials']['link6']['origin']['y']} 
+                                  ${physical['link_inertials']['link6']['origin']['z']}" scope="parent"/>
+  <xacro:property name="link6_ixx" value="${physical['link_inertials']['link6']['inertia']['ixx']}" scope="parent"/>
+  <xacro:property name="link6_ixy" value="${physical['link_inertials']['link6']['inertia']['ixy']}" scope="parent"/>
+  <xacro:property name="link6_ixz" value="${physical['link_inertials']['link6']['inertia']['ixz']}" scope="parent"/>
+  <xacro:property name="link6_iyy" value="${physical['link_inertials']['link6']['inertia']['iyy']}" scope="parent"/>
+  <xacro:property name="link6_iyz" value="${physical['link_inertials']['link6']['inertia']['iyz']}" scope="parent"/>
+  <xacro:property name="link6_izz" value="${physical['link_inertials']['link6']['inertia']['izz']}" scope="parent"/>
 
-		<!-- Joint dynamics -->
-		<xacro:property name="joint_dynamics_joint1_damping" value="${joint_dynamics['joint1']['damping']}" scope="parent"/>
-		<xacro:property name="joint_dynamics_joint1_friction" value="${joint_dynamics['joint1']['friction']}" scope="parent"/>
+  <!-- Joint dynamics -->
+  <xacro:property name="joint_dynamics_joint1_damping" value="${joint_dynamics['joint1']['damping']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint1_friction" value="${joint_dynamics['joint1']['friction']}" scope="parent"/>
 
-		<xacro:property name="joint_dynamics_joint2_damping" value="${joint_dynamics['joint2']['damping']}" scope="parent"/>
-		<xacro:property name="joint_dynamics_joint2_friction" value="${joint_dynamics['joint2']['friction']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint2_damping" value="${joint_dynamics['joint2']['damping']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint2_friction" value="${joint_dynamics['joint2']['friction']}" scope="parent"/>
 
-		<xacro:property name="joint_dynamics_joint3_damping" value="${joint_dynamics['joint3']['damping']}" scope="parent"/>
-		<xacro:property name="joint_dynamics_joint3_friction" value="${joint_dynamics['joint3']['friction']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint3_damping" value="${joint_dynamics['joint3']['damping']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint3_friction" value="${joint_dynamics['joint3']['friction']}" scope="parent"/>
 
-		<xacro:property name="joint_dynamics_joint4_damping" value="${joint_dynamics['joint4']['damping']}" scope="parent"/>
-		<xacro:property name="joint_dynamics_joint4_friction" value="${joint_dynamics['joint4']['friction']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint4_damping" value="${joint_dynamics['joint4']['damping']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint4_friction" value="${joint_dynamics['joint4']['friction']}" scope="parent"/>
 
-		<xacro:property name="joint_dynamics_joint5_damping" value="${joint_dynamics['joint5']['damping']}" scope="parent"/>
-		<xacro:property name="joint_dynamics_joint5_friction" value="${joint_dynamics['joint5']['friction']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint5_damping" value="${joint_dynamics['joint5']['damping']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint5_friction" value="${joint_dynamics['joint5']['friction']}" scope="parent"/>
 
-		<xacro:property name="joint_dynamics_joint6_damping" value="${joint_dynamics['joint6']['damping']}" scope="parent"/>
-		<xacro:property name="joint_dynamics_joint6_friction" value="${joint_dynamics['joint6']['friction']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint6_damping" value="${joint_dynamics['joint6']['damping']}" scope="parent"/>
+  <xacro:property name="joint_dynamics_joint6_friction" value="${joint_dynamics['joint6']['friction']}" scope="parent"/>
 
-	</xacro:macro>
+  </xacro:macro>
 
 </robot>
-
