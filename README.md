@@ -84,7 +84,7 @@ You would see the RViz with the robot model spawned.
 
 1. Starting the necessary Gazebo-ROS nodes, ros2 joint controllers and joint state broadcasters
 
-`ros2 launch elite_description simulate_ec66.launch.py`
+`ros2 launch elite_gz simulate_elite.launch.py`
 
 2. Start the planning pipeline by launching:
 
