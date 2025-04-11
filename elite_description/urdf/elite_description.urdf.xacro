@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+Author: Pradheep Padmanabhan
+Contributor: Adarsh Karan K P
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="elite">
+<!-- This is the main URDF file for ec66 elite arm-->
+
+  <!-- Set use_gz = true for Modern Gazebo Simulation-->
+  <xacro:arg name="use_gz" default="false"/>
+
+  <xacro:arg name="arm_type" default="ec66"/>
+  
+  <!-- Include macros -->
+  <xacro:include filename="$(find elite_description)/urdf/xacros/elite_macro.xacro" />
+
+  <!-- Elite arm parameters -->
+  <xacro:arg name="arm_parent" default="world"/>
+  <xacro:arg name="tf_prefix" default=""/>
+  <xacro:arg name="joint_limit_params_file" default="$(find elite_description)/config/$(arg arm_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_params_file" default="$(find elite_description)/config/$(arg arm_type)/kinematics.yaml"/>
+  <xacro:arg name="physical_params_file" default="$(find elite_description)/config/$(arg arm_type)/physical_parameters.yaml"/>
+  <xacro:arg name="initial_joint_positions_file" default="$(find elite_description)/config/$(arg arm_type)/initial_positions.yaml"/>
+  
+  <!-- Load parameters from YAML file -->
+  <xacro:property 
+    name="elite_initial_positions" 
+    value="${xacro.load_yaml('$(arg initial_joint_positions_file)')}"
+    />
+  
+  <!-- Create arm -->
+  <xacro:elite_robot 
+    name="$(arg arm_type)"
+    tf_prefix="$(arg tf_prefix)"
+    parent="$(arg arm_parent)"
+    joint_limits_parameters_file="$(arg joint_limit_params_file)"
+    kinematics_parameters_file="$(arg kinematics_params_file)"
+    physical_parameters_file="$(arg physical_params_file)"
+    >
+    <origin xyz="0 0 0" rpy="0 0 0" /> 
+  </xacro:elite_robot>
+
+  <!-- Include ros2_control configuration for simulation -->
+  <xacro:if value="$(arg use_gz)">
+    <xacro:include filename="$(find elite_description)/urdf/xacros/elite_gz_ros2_control.urdf.xacro" />
+  </xacro:if>
+
+</robot>

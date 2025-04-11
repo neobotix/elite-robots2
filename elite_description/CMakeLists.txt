@@ -3,12 +3,12 @@ project(elite_description)
 
 find_package(ament_cmake REQUIRED)
 
-install(DIRECTORY launch
-  config
+install(DIRECTORY
   launch
+  config
   meshes
   urdf
-  world
+  rviz
   DESTINATION share/${PROJECT_NAME}/)
 
 ament_package()

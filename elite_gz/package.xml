@@ -1,33 +1,34 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>elite_description</name>
+  <name>elite_gz</name>
   <version>0.1.0</version>
-  <description>The elite_description package</description>
-
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
-  <!-- Example:  -->
-  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="mzebra@todo.todo">mzebra</maintainer>
-  <maintainer email="padhupradheep@gmail.com">pradheep</maintainer>
+  <description>The elite_gz package for modern gazebo simulation of elite manipulator arms</description>
   <maintainer email="adarshkaran01@gmail.com">adarsh</maintainer>
-
   <license>MIT</license>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
+  
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>rviz-visual-tools</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>xacro</exec_depend>
-  
-  <!-- The export tag contains other, unspecified, tags -->
+
+  <exec_depend>ros_gz</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
-    <gazebo_ros gazebo_model_path="${prefix}/.." />
   </export>
 </package>

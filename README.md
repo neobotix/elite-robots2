@@ -91,3 +91,25 @@ You would see the RViz with the robot model spawned.
 `ros2 launch elite_moveit move_group_sim.launch.py use_sim_time:=True`
 
 You would see the RViz with the robot model spawned. 
+
+### Changelog:
+
+1. **elite_description**
+
+    - Restructured the package and modularized Xacro files following industry standards.
+    - Migrated from classic Gazebo to modern Gazebo (Ionic).
+
+2. **elite_gz**
+
+    - Refactored launch files and added necessary configurations to support migration from classic Gazebo to modern Gazebo (Ionic).
+    - Added elite_description package to environment variables through the launch file.
+
+3. **elite_moveit**
+
+    - Updated MoveIt launch file to align with other package changes.
+
+4. **General**
+
+    - Updated dependencies.
+
+    
