@@ -50,9 +50,8 @@ def execution_stage(context: LaunchContext):
         executable='robot_state_publisher',
         name='robot_state_publisher',
         output='screen',
-        parameters=[{'robot_description':Command([
-            "xacro", " ", robot_description_xacro])}]
-        )
+        parameters=[{'robot_description': robot_description_xacro}]
+    )
 
     return [
         bringup_arm_driver,
